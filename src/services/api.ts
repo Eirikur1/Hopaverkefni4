@@ -72,7 +72,7 @@ const SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/recipes';
 export async function searchRecipes(query: string, number: number = 12): Promise<any> {
   try {
     const response = await fetch(
-      `${SPOONACULAR_BASE_URL}/complexSearch?query=${encodeURIComponent(query)}&number=${number}&apiKey=${SPOONACULAR_API_KEY}&addRecipeInformation=true`
+      `${SPOONACULAR_BASE_URL}/complexSearch?query=${encodeURIComponent(query)}&number=${number}&apiKey=${SPOONACULAR_API_KEY}&addRecipeInformation=true&fillIngredients=true`
     );
     
     if (!response.ok) {

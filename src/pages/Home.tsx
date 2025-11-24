@@ -50,19 +50,24 @@ const Home: React.FC = () => {
     setLoading(true);
     try {
       const data = await searchRecipes(query, 8);
-      const formattedRecipes = data.results.map((recipe: any) => ({
-        id: recipe.id,
-        image: recipe.image,
-        heading: recipe.title,
-        ingredients: recipe.extendedIngredients?.length
-          ? `${recipe.extendedIngredients.length} Ingredients`
-          : recipe.nutrition?.ingredients?.length
-          ? `${recipe.nutrition.ingredients.length} Ingredients`
-          : "Recipe",
-        description:
-          recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) + "..." ||
-          "Delicious recipe",
-      }));
+      const formattedRecipes = data.results.map((recipe: any) => {
+        // Try multiple ways to get ingredient count
+        const ingredientCount =
+          recipe.extendedIngredients?.length ||
+          recipe.nutrition?.ingredients?.length ||
+          0;
+
+        return {
+          id: recipe.id,
+          image: recipe.image,
+          heading: recipe.title,
+          ingredients:
+            ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
+          description:
+            recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) + "..." ||
+            "Delicious recipe",
+        };
+      });
       setRecipes(formattedRecipes);
     } catch (error) {
       console.error("Error searching recipes:", error);
