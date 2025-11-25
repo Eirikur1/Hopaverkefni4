@@ -38,6 +38,13 @@ Here are some free APIs you can use for your project:
 - **Marvel API** - https://developer.marvel.com/
   - Marvel characters and comics
 
+### Food & Recipes
+
+- **TheMealDB** - https://www.themealdb.com/api.php
+  - Free recipe API (no daily limits, test key: '1')
+  - Search recipes, random meals, ingredient filtering
+  - **Currently used in this project**
+
 ### Iceland-Specific
 
 - **Apis.is** - https://apis.is/
