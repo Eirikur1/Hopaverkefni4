@@ -93,21 +93,6 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
               )}
             </div>
 
-            {/* Summary */}
-            {recipe.summary && (
-              <div className="mb-6">
-                <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl mb-2">
-                  Summary
-                </h3>
-                <p
-                  className="font-['Roboto_Mono',monospace] text-sm text-gray-700"
-                  dangerouslySetInnerHTML={{
-                    __html: recipe.summary,
-                  }}
-                />
-              </div>
-            )}
-
             {/* Ingredients */}
             {recipe.extendedIngredients && recipe.extendedIngredients.length > 0 && (
               <div className="mb-6">
