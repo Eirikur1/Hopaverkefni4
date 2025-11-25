@@ -143,7 +143,7 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
         <div className="flex gap-4">
           <button
             type="submit"
-            className="flex-1 px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-black text-[#f4eedf] hover:bg-gray-800 transition-colors"
+            className="flex-1 px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200"
           >
             Search
           </button>
@@ -152,7 +152,7 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
             <button
               type="button"
               onClick={handleReset}
-              className="px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf] transition-colors"
+              className="px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf] active:scale-95 transition-all duration-200"
             >
               Reset
             </button>

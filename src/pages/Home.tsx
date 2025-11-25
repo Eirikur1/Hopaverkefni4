@@ -253,7 +253,13 @@ const Home: React.FC = () => {
         <div className="bg-[#f4eedf] min-h-screen relative">
           {/* Header with Logo */}
           <header className="flex flex-col items-center pt-0">
-            <div className="flex flex-col items-center">
+            <div 
+              className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                loadRandomRecipes();
+              }}
+            >
               {/* Logo with Animation */}
               <SplitText
                 text="Menú"
@@ -314,7 +320,7 @@ const Home: React.FC = () => {
                     <button
                       onClick={loadMoreRecipes}
                       disabled={loadingMore}
-                      className="font-['Roboto_Mono',monospace] font-medium text-[18px] uppercase tracking-[2px] px-12 py-4 bg-black text-[#f4eedf] hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="font-['Roboto_Mono',monospace] font-medium text-[18px] uppercase tracking-[2px] px-12 py-4 bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
                     >
                       {loadingMore ? "Loading..." : "Load More"}
                     </button>
