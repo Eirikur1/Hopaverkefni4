@@ -62,9 +62,22 @@ export async function fetchExampleData<T>(): Promise<T> {
   return response.data;
 }
 
-// Recipe API Configuration
-const SPOONACULAR_API_KEY = '165f3f67815047d4935ddaebe754c8df';
-const SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/recipes';
+// Recipe API Configuration - TheMealDB (Free API)
+// Using free API key '1' - built into the URL
+const MEALDB_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
+
+/**
+ * Helper function to count ingredients in a meal
+ */
+function countIngredients(meal: any): number {
+  let count = 0;
+  for (let i = 1; i <= 20; i++) {
+    if (meal[`strIngredient${i}`] && meal[`strIngredient${i}`].trim()) {
+      count++;
+    }
+  }
+  return count;
+}
 
 /**
  * Search recipes by query
@@ -72,7 +85,7 @@ const SPOONACULAR_BASE_URL = 'https://api.spoonacular.com/recipes';
 export async function searchRecipes(query: string, number: number = 12, offset: number = 0): Promise<any> {
   try {
     const response = await fetch(
-      `${SPOONACULAR_BASE_URL}/complexSearch?query=${encodeURIComponent(query)}&number=${number}&offset=${offset}&apiKey=${SPOONACULAR_API_KEY}&addRecipeInformation=true&fillIngredients=true`
+      `${MEALDB_BASE_URL}/search.php?s=${encodeURIComponent(query)}`
     );
     
     const data = await response.json();
@@ -82,7 +95,18 @@ export async function searchRecipes(query: string, number: number = 12, offset: 
       throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    return data;
+    // TheMealDB returns {meals: [...]} or {meals: null} if no results
+    // Convert to Spoonacular-like format for consistency
+    return {
+      results: data.meals ? data.meals.slice(offset, offset + number).map((meal: any) => ({
+        id: parseInt(meal.idMeal),
+        title: meal.strMeal,
+        image: meal.strMealThumb,
+        summary: meal.strInstructions,
+        extendedIngredients: Array.from({ length: countIngredients(meal) })
+      })) : [],
+      totalResults: data.meals ? data.meals.length : 0
+    };
   } catch (error) {
     console.error('Recipe search error:', error);
     throw error;
@@ -97,9 +121,11 @@ export async function searchRecipesByIngredients(
   number: number = 12
 ): Promise<any> {
   try {
-    const ingredientsParam = ingredients.join(',');
+    // TheMealDB only supports single ingredient filtering in free version
+    // Use the first ingredient for now
+    const mainIngredient = ingredients[0];
     const response = await fetch(
-      `${SPOONACULAR_BASE_URL}/findByIngredients?ingredients=${encodeURIComponent(ingredientsParam)}&number=${number}&apiKey=${SPOONACULAR_API_KEY}&ranking=2`
+      `${MEALDB_BASE_URL}/filter.php?i=${encodeURIComponent(mainIngredient)}`
     );
     
     const data = await response.json();
@@ -109,7 +135,14 @@ export async function searchRecipesByIngredients(
       throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    return data;
+    // Convert to Spoonacular-like format
+    return data.meals ? data.meals.slice(0, number).map((meal: any) => ({
+      id: parseInt(meal.idMeal),
+      title: meal.strMeal,
+      image: meal.strMealThumb,
+      usedIngredientCount: 1, // Since we're filtering by one ingredient
+      missedIngredientCount: 0 // We don't have this info from TheMealDB
+    })) : [];
   } catch (error) {
     console.error('Recipe search by ingredients error:', error);
     throw error;
@@ -122,7 +155,7 @@ export async function searchRecipesByIngredients(
 export async function getRecipeDetails(id: number): Promise<any> {
   try {
     const response = await fetch(
-      `${SPOONACULAR_BASE_URL}/${id}/information?apiKey=${SPOONACULAR_API_KEY}`
+      `${MEALDB_BASE_URL}/lookup.php?i=${id}`
     );
     
     const data = await response.json();
@@ -132,7 +165,38 @@ export async function getRecipeDetails(id: number): Promise<any> {
       throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    return data;
+    // Return the first meal from the array
+    if (data.meals && data.meals.length > 0) {
+      const meal = data.meals[0];
+      
+      // Extract ingredients and measures
+      const ingredients = [];
+      for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+        if (ingredient && ingredient.trim()) {
+          ingredients.push({
+            name: ingredient,
+            amount: measure || '',
+            original: `${measure || ''} ${ingredient}`.trim()
+          });
+        }
+      }
+      
+      return {
+        id: parseInt(meal.idMeal),
+        title: meal.strMeal,
+        image: meal.strMealThumb,
+        summary: meal.strInstructions,
+        instructions: meal.strInstructions,
+        extendedIngredients: ingredients,
+        sourceUrl: meal.strSource || meal.strYoutube || '',
+        readyInMinutes: 30, // TheMealDB doesn't provide this
+        servings: 4 // Default value
+      };
+    }
+    
+    throw new Error('Recipe not found');
   } catch (error) {
     console.error('Recipe details error:', error);
     throw error;
@@ -144,18 +208,28 @@ export async function getRecipeDetails(id: number): Promise<any> {
  */
 export async function getRandomRecipes(number: number = 8): Promise<any> {
   try {
-    const response = await fetch(
-      `${SPOONACULAR_BASE_URL}/random?number=${number}&apiKey=${SPOONACULAR_API_KEY}`
+    // TheMealDB free API only gives 1 random meal at a time
+    // We need to make multiple requests to get multiple random meals
+    const promises = Array.from({ length: number }, () =>
+      fetch(`${MEALDB_BASE_URL}/random.php`).then(res => res.json())
     );
     
-    const data = await response.json();
+    const results = await Promise.all(promises);
     
-    // Check if API returned an error
-    if (data.status === 'failure' || !response.ok) {
-      throw new Error(data.message || `API Error: ${response.statusText}`);
-    }
+    // Extract meals from all responses
+    const meals = results
+      .filter(data => data.meals && data.meals.length > 0)
+      .map(data => data.meals[0]);
     
-    return data;
+    return {
+      recipes: meals.map((meal: any) => ({
+        id: parseInt(meal.idMeal),
+        title: meal.strMeal,
+        image: meal.strMealThumb,
+        summary: meal.strInstructions,
+        extendedIngredients: Array.from({ length: countIngredients(meal) })
+      }))
+    };
   } catch (error) {
     console.error('Random recipes error:', error);
     throw error;
