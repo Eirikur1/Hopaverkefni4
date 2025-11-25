@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 interface RecipeSearchProps {
   onSearch: (query: string) => void;
   onSearchByIngredients: (ingredients: string[]) => void;
+  onReset: () => void;
+  showReset?: boolean;
 }
 
 export const RecipeSearch: React.FC<RecipeSearchProps> = ({
   onSearch,
   onSearchByIngredients,
+  onReset,
+  showReset = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [ingredientsInput, setIngredientsInput] = useState('');
@@ -25,6 +29,12 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
         .filter(i => i.length > 0);
       onSearchByIngredients(ingredients);
     }
+  };
+
+  const handleReset = () => {
+    setSearchQuery('');
+    setIngredientsInput('');
+    onReset();
   };
 
   return (
@@ -73,12 +83,24 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
           />
         )}
         
-        <button
-          type="submit"
-          className="px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-black text-[#f4eedf] hover:bg-gray-800 transition-colors"
-        >
-          Search
-        </button>
+        <div className="flex gap-4">
+          <button
+            type="submit"
+            className="flex-1 px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-black text-[#f4eedf] hover:bg-gray-800 transition-colors"
+          >
+            Search
+          </button>
+          
+          {showReset && (
+            <button
+              type="button"
+              onClick={handleReset}
+              className="px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf] transition-colors"
+            >
+              Reset
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );

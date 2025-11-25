@@ -279,6 +279,8 @@ const Home: React.FC = () => {
             <RecipeSearch
               onSearch={handleSearch}
               onSearchByIngredients={handleSearchByIngredients}
+              onReset={loadRandomRecipes}
+              showReset={currentSearchType !== "random"}
             />
           </section>
 
