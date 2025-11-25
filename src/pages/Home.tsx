@@ -4,7 +4,6 @@ import {
   LogoLoop,
   SplitText,
   ClickSpark,
-  FilmGrain,
   AnimatedText,
   RecipeSearch,
   RecipeModal,
@@ -18,7 +17,14 @@ import {
 const Home: React.FC = () => {
   const [recipes, setRecipes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null);
+  const [currentSearchType, setCurrentSearchType] = useState<
+    "random" | "query" | "ingredients"
+  >("random");
+  const [currentQuery, setCurrentQuery] = useState<string>("");
+  const [currentIngredients, setCurrentIngredients] = useState<string[]>([]);
+  const [hasMoreResults, setHasMoreResults] = useState(true);
 
   // Load random recipes on mount
   useEffect(() => {
@@ -39,6 +45,8 @@ const Home: React.FC = () => {
           "Delicious recipe",
       }));
       setRecipes(formattedRecipes);
+      setCurrentSearchType("random");
+      setHasMoreResults(true);
     } catch (error) {
       console.error("Error loading recipes:", error);
     } finally {
@@ -69,6 +77,10 @@ const Home: React.FC = () => {
         };
       });
       setRecipes(formattedRecipes);
+      setCurrentSearchType("query");
+      setCurrentQuery(query);
+      // Check if there are potentially more results (API returns up to 100 total)
+      setHasMoreResults(data.totalResults > 8);
     } catch (error) {
       console.error("Error searching recipes:", error);
     } finally {
@@ -98,10 +110,94 @@ const Home: React.FC = () => {
         };
       });
       setRecipes(formattedRecipes);
+      setCurrentSearchType("ingredients");
+      setCurrentIngredients(ingredients);
+      // Ingredient search can return fewer results, so check if we got a full page
+      setHasMoreResults(data.length >= 8);
     } catch (error) {
       console.error("Error searching recipes by ingredients:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadMoreRecipes = async () => {
+    setLoadingMore(true);
+    try {
+      let newRecipes: any[] = [];
+      const currentOffset = recipes.length;
+
+      if (currentSearchType === "query") {
+        // Load more from the same search query
+        const data = await searchRecipes(currentQuery, 8, currentOffset);
+        newRecipes = data.results.map((recipe: any) => {
+          const ingredientCount =
+            recipe.extendedIngredients?.length ||
+            recipe.nutrition?.ingredients?.length ||
+            0;
+
+          return {
+            id: recipe.id,
+            image: recipe.image,
+            heading: recipe.title,
+            ingredients:
+              ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
+            description:
+              recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) +
+                "..." || "Delicious recipe",
+          };
+        });
+        // Check if there are more results available
+        setHasMoreResults(
+          data.totalResults > currentOffset + newRecipes.length
+        );
+      } else if (currentSearchType === "ingredients") {
+        // Load more from ingredient search (note: Spoonacular has limited support for offset here)
+        const data = await searchRecipesByIngredients(currentIngredients, 8);
+        newRecipes = data.map((recipe: any) => {
+          const totalIngredients =
+            (recipe.usedIngredientCount || 0) +
+            (recipe.missedIngredientCount || 0);
+          return {
+            id: recipe.id,
+            image: recipe.image,
+            heading: recipe.title,
+            ingredients:
+              totalIngredients > 0
+                ? `${totalIngredients} Ingredients`
+                : `${recipe.usedIngredientCount || 0} of yours`,
+            description: `You have: ${
+              recipe.usedIngredientCount || 0
+            }, Missing: ${recipe.missedIngredientCount || 0}`,
+          };
+        });
+        setHasMoreResults(newRecipes.length >= 8);
+      } else {
+        // Load more random recipes
+        const data = await getRandomRecipes(8);
+        newRecipes = data.recipes.map((recipe: any) => ({
+          id: recipe.id,
+          image: recipe.image,
+          heading: recipe.title,
+          ingredients: `${recipe.extendedIngredients?.length || 0} Ingredients`,
+          description:
+            recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) + "..." ||
+            "Delicious recipe",
+        }));
+        setHasMoreResults(true);
+      }
+
+      // Only add recipes if we got results
+      if (newRecipes.length > 0) {
+        setRecipes([...recipes, ...newRecipes]);
+      } else {
+        setHasMoreResults(false);
+      }
+    } catch (error) {
+      console.error("Error loading more recipes:", error);
+      setHasMoreResults(false);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -146,7 +242,6 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <FilmGrain />
       <ClickSpark
         sparkColor="#000000"
         sparkSize={10}
@@ -154,8 +249,8 @@ const Home: React.FC = () => {
         sparkCount={8}
         duration={400}
       >
-        <div className="bg-[#f4eedf] min-h-screen relative grain-container">
-          {/* Header with Logo and Navigation */}
+        <div className="bg-[#f4eedf] min-h-screen relative">
+          {/* Header with Logo */}
           <header className="flex flex-col items-center pt-0">
             <div className="flex flex-col items-center">
               {/* Logo with Animation */}
@@ -173,21 +268,6 @@ const Home: React.FC = () => {
                 rootMargin="-100px"
                 textAlign="center"
               />
-
-              {/* Navigation */}
-              <nav className="font-['Roboto_Mono',monospace] text-[14px] text-black uppercase tracking-[2.8px] leading-[18px] text-center">
-                <ul className="list-none p-0 m-0">
-                  <li className="mb-1">
-                    <AnimatedText delay={0.3}>•photos</AnimatedText>
-                  </li>
-                  <li className="mb-1">
-                    <AnimatedText delay={0.4}>•Recipes</AnimatedText>
-                  </li>
-                  <li className="mb-1">
-                    <AnimatedText delay={0.5}>•about us</AnimatedText>
-                  </li>
-                </ul>
-              </nav>
             </div>
           </header>
 
@@ -206,15 +286,30 @@ const Home: React.FC = () => {
                 Loading recipes...
               </div>
             ) : recipes.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[30px] gap-y-[40px] justify-items-center">
-                {recipes.map((recipe) => (
-                  <ProductCard
-                    key={recipe.id}
-                    {...recipe}
-                    onClick={() => setSelectedRecipeId(recipe.id)}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[30px] gap-y-[40px] justify-items-center">
+                  {recipes.map((recipe) => (
+                    <ProductCard
+                      key={recipe.id}
+                      {...recipe}
+                      onClick={() => setSelectedRecipeId(recipe.id)}
+                    />
+                  ))}
+                </div>
+
+                {/* Load More Button */}
+                {hasMoreResults && (
+                  <div className="flex justify-center mt-12">
+                    <button
+                      onClick={loadMoreRecipes}
+                      disabled={loadingMore}
+                      className="font-['Roboto_Mono',monospace] font-medium text-[18px] uppercase tracking-[2px] px-12 py-4 bg-black text-[#f4eedf] hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {loadingMore ? "Loading..." : "Load More"}
+                    </button>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="text-center font-['Roboto_Mono',monospace] text-xl">
                 No recipes found. Try a different search!

@@ -5,21 +5,3 @@ body {
   margin: 0;
   padding: 0;
 }
-
-.grain-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url(https://assets.codepen.io/721952/grain.png);
-  opacity: 0.08;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.grain-container > * {
-  position: relative;
-  z-index: 2;
-}
