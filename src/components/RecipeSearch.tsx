@@ -100,20 +100,20 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
       <div className="flex justify-center gap-4 mb-6">
         <button
           onClick={() => setSearchMode('query')}
-          className={`px-6 py-2 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider transition-colors ${
+          className={`px-6 py-2 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
             searchMode === 'query'
-              ? 'bg-black text-[#f4eedf]'
-              : 'bg-transparent text-black border-2 border-black'
+              ? 'bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black border-2 border-black'
+              : 'bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf]'
           }`}
         >
           Search Recipes
         </button>
         <button
           onClick={() => setSearchMode('ingredients')}
-          className={`px-6 py-2 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider transition-colors ${
+          className={`px-6 py-2 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
             searchMode === 'ingredients'
-              ? 'bg-black text-[#f4eedf]'
-              : 'bg-transparent text-black border-2 border-black'
+              ? 'bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black border-2 border-black'
+              : 'bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf]'
           }`}
         >
           By Ingredients
