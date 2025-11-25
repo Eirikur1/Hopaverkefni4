@@ -95,12 +95,12 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[800px] mx-auto mb-12">
+    <div className="w-full max-w-[800px] mx-auto mb-8 sm:mb-12">
       {/* Mode Toggle */}
-      <div className="flex justify-center gap-4 mb-6">
+      <div className="flex justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
         <button
           onClick={() => setSearchMode('query')}
-          className={`px-6 py-2 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
+          className={`px-4 sm:px-6 py-2 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
             searchMode === 'query'
               ? 'bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black border-2 border-black'
               : 'bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf]'
@@ -110,7 +110,7 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
         </button>
         <button
           onClick={() => setSearchMode('ingredients')}
-          className={`px-6 py-2 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
+          className={`px-4 sm:px-6 py-2 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
             searchMode === 'ingredients'
               ? 'bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black border-2 border-black'
               : 'bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf]'
@@ -121,14 +121,14 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
       </div>
 
       {/* Search Form */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
         {searchMode === 'query' ? (
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Start typing to search recipes..."
-            className="w-full px-6 py-4 font-['Roboto_Mono',monospace] text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
+            className="w-full px-4 sm:px-6 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-sm sm:text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
           />
         ) : (
           <input
@@ -136,14 +136,14 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
             value={ingredientsInput}
             onChange={(e) => setIngredientsInput(e.target.value)}
             placeholder="Start typing ingredients: e.g., chicken rice garlic"
-            className="w-full px-6 py-4 font-['Roboto_Mono',monospace] text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
+            className="w-full px-4 sm:px-6 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-sm sm:text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
           />
         )}
         
-        <div className="flex gap-4">
+        <div className="flex gap-2 sm:gap-4">
           <button
             type="submit"
-            className="flex-1 px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200"
+            className="flex-1 px-6 sm:px-8 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200"
           >
             Search
           </button>
@@ -152,7 +152,7 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
             <button
               type="button"
               onClick={handleReset}
-              className="px-8 py-4 font-['Roboto_Mono',monospace] text-sm uppercase tracking-wider bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf] active:scale-95 transition-all duration-200"
+              className="px-6 sm:px-8 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf] active:scale-95 transition-all duration-200"
             >
               Reset
             </button>

@@ -294,7 +294,7 @@ const Home: React.FC = () => {
               <SplitText
                 text="Menú"
                 tag="h1"
-                className="font-['Gochi_Hand',cursive] text-[64px] text-black tracking-[0.64px] leading-[66px] mt-12 mb-2"
+                className="font-['Gochi_Hand',cursive] text-[48px] sm:text-[64px] text-black tracking-[0.64px] leading-[50px] sm:leading-[66px] mt-8 sm:mt-12 mb-2"
                 delay={100}
                 duration={0.6}
                 ease="power3.out"
@@ -309,7 +309,7 @@ const Home: React.FC = () => {
           </header>
 
           {/* Recipe Search */}
-          <section className="px-8 py-12 mt-8">
+          <section className="px-4 sm:px-8 py-8 sm:py-12 mt-4 sm:mt-8">
             <RecipeSearch
               onSearch={handleSearch}
               onSearchByIngredients={handleSearchByIngredients}
@@ -319,9 +319,9 @@ const Home: React.FC = () => {
           </section>
 
           {/* Recipe Cards Grid */}
-          <section className="px-[21px] py-[60px] max-w-[1200px] mx-auto">
+          <section className="px-4 sm:px-[21px] py-8 sm:py-[60px] max-w-[1200px] mx-auto">
             {loading ? (
-              <div className="text-center font-['Roboto_Mono',monospace] text-xl text-black">
+              <div className="text-center font-['Roboto_Mono',monospace] text-lg sm:text-xl text-black">
                 Loading recipes...
               </div>
             ) : recipes.length > 0 ? (
@@ -332,7 +332,7 @@ const Home: React.FC = () => {
                   stagger={0.08}
                   animateFrom="bottom"
                   blurToFocus={true}
-                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[30px] gap-y-[40px] justify-items-center"
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-[30px] gap-y-6 sm:gap-y-[40px] justify-items-center"
                 >
                   {recipes.map((recipe) => (
                     <ProductCard
@@ -346,11 +346,11 @@ const Home: React.FC = () => {
 
                 {/* Load More Button */}
                 {hasMoreResults && (
-                  <div className="flex justify-center mt-12">
+                  <div className="flex justify-center mt-8 sm:mt-12">
                     <button
                       onClick={loadMoreRecipes}
                       disabled={loadingMore}
-                      className="font-['Roboto_Mono',monospace] font-medium text-[18px] uppercase tracking-[2px] px-12 py-4 bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
+                      className="font-['Roboto_Mono',monospace] font-medium text-sm sm:text-[18px] uppercase tracking-[1px] sm:tracking-[2px] px-8 sm:px-12 py-3 sm:py-4 bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
                     >
                       {loadingMore ? "Loading..." : "Load More"}
                     </button>
@@ -365,8 +365,8 @@ const Home: React.FC = () => {
           </section>
 
           {/* Middle Section with Text and Fish */}
-          <section className="flex justify-center items-center gap-[156px] mt-[120px] mb-[120px] px-8">
-            <div className="font-['Roboto_Mono',monospace] text-[20px] text-black w-[525px]">
+          <section className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-[156px] mt-12 md:mt-[120px] mb-12 md:mb-[120px] px-4 sm:px-8">
+            <div className="font-['Roboto_Mono',monospace] text-base sm:text-lg md:text-[20px] text-black w-full md:w-[525px] text-center md:text-left">
               <AnimatedText className="font-bold mb-2" delay={0.2}>
                 Elegant
               </AnimatedText>
@@ -375,7 +375,7 @@ const Home: React.FC = () => {
               </AnimatedText>
             </div>
 
-            <div className="flex items-center justify-center h-full">
+            <div className="hidden md:flex items-center justify-center h-full">
               <img
                 src={`${
                   import.meta.env.BASE_URL
@@ -385,7 +385,7 @@ const Home: React.FC = () => {
               />
             </div>
 
-            <div className="w-[474px] h-[545px] flex items-center justify-center">
+            <div className="w-full max-w-[300px] md:w-[474px] aspect-square md:h-[545px] flex items-center justify-center">
               <img
                 src={`${
                   import.meta.env.BASE_URL
@@ -411,9 +411,9 @@ const Home: React.FC = () => {
           </div>
 
           {/* Footer Section */}
-          <footer className="flex justify-center px-8 py-[60px] mt-[80px]">
-            <div className="flex w-[1130px] justify-between items-center">
-              <div className="w-[400px] h-[560px] flex items-center justify-center">
+          <footer className="flex justify-center px-4 sm:px-8 py-8 sm:py-[60px] mt-12 sm:mt-[80px]">
+            <div className="flex flex-col md:flex-row w-full max-w-[1130px] justify-between items-center gap-8 md:gap-0">
+              <div className="w-full max-w-[250px] sm:max-w-[300px] md:w-[400px] aspect-[400/560] md:h-[560px] flex items-center justify-center">
                 <img
                   src={`${
                     import.meta.env.BASE_URL
@@ -423,7 +423,7 @@ const Home: React.FC = () => {
                 />
               </div>
 
-              <div className="font-['Roboto_Mono',monospace] font-medium text-[36px] text-black uppercase flex flex-col gap-[30px]">
+              <div className="font-['Roboto_Mono',monospace] font-medium text-xl sm:text-2xl md:text-[36px] text-black uppercase flex flex-col gap-4 sm:gap-6 md:gap-[30px] text-center md:text-left">
                 <div className="leading-none">
                   <AnimatedText className="mb-2" delay={0.2}>
                     COntact@MENú.com

@@ -22,11 +22,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div 
       data-animate-card
       data-card-key={id}
-      className="flex flex-col w-[240px] cursor-pointer hover:scale-95 transition-transform duration-300"
+      className="flex flex-col w-full max-w-[240px] cursor-pointer hover:scale-95 transition-transform duration-300"
       onClick={onClick}
     >
       {/* Image - Fixed aspect ratio */}
-      <div className="w-full h-[240px] overflow-hidden mb-3 bg-gray-100 rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]">
+      <div className="w-full aspect-square overflow-hidden mb-3 bg-gray-100 rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]">
         <img 
           src={image} 
           alt={heading}
