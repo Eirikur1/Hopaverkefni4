@@ -16,7 +16,7 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [ingredientsInput, setIngredientsInput] = useState('');
   const [searchMode, setSearchMode] = useState<'query' | 'ingredients'>('query');
-  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceTimerRef = useRef<number | null>(null);
   const lastSearchedQueryRef = useRef<string>('');
   const lastSearchedIngredientsRef = useRef<string>('');
 

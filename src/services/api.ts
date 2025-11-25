@@ -177,8 +177,8 @@ export async function searchRecipesByIngredients(
                   
                   const hasMatch = 
                     ingredientLower === searchIngredient ||
-                    ingredientWords.some(word => searchWords.includes(word) && word.length > 2) ||
-                    searchWords.some(word => ingredientWords.includes(word) && word.length > 2);
+                    ingredientWords.some((word: string) => searchWords.includes(word) && word.length > 2) ||
+                    searchWords.some((word: string) => ingredientWords.includes(word) && word.length > 2);
                   
                   if (hasMatch) {
                     matchedIngredients.add(searchIngredient);
