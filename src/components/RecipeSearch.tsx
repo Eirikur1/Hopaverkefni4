@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface RecipeSearchProps {
   onSearch: (query: string) => void;
@@ -16,15 +16,67 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [ingredientsInput, setIngredientsInput] = useState('');
   const [searchMode, setSearchMode] = useState<'query' | 'ingredients'>('query');
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastSearchedQueryRef = useRef<string>('');
+  const lastSearchedIngredientsRef = useRef<string>('');
+
+  // Reset last searched when switching modes
+  useEffect(() => {
+    lastSearchedQueryRef.current = '';
+    lastSearchedIngredientsRef.current = '';
+  }, [searchMode]);
+
+  // Auto-search as user types (for both modes)
+  useEffect(() => {
+    // Clear previous timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
+
+    if (searchMode === 'query' && searchQuery.trim().length >= 2) {
+      // Only search if the query has changed from last search
+      if (searchQuery.trim() !== lastSearchedQueryRef.current) {
+        // Set new timer to search after user stops typing
+        debounceTimerRef.current = setTimeout(() => {
+          lastSearchedQueryRef.current = searchQuery.trim();
+          onSearch(searchQuery);
+        }, 1000); // Wait 1 second after user stops typing
+      }
+    } else if (searchMode === 'ingredients' && ingredientsInput.trim().length >= 2) {
+      // Only search if the ingredients have changed from last search
+      if (ingredientsInput.trim() !== lastSearchedIngredientsRef.current) {
+        // Set new timer to search after user stops typing
+        debounceTimerRef.current = setTimeout(() => {
+          lastSearchedIngredientsRef.current = ingredientsInput.trim();
+          const ingredients = ingredientsInput
+            .split(/[\s,]+/) // Split by spaces or commas
+            .map(i => i.trim())
+            .filter(i => i.length > 0);
+          
+          if (ingredients.length > 0) {
+            onSearchByIngredients(ingredients);
+          }
+        }, 1000); // Wait 1 second after user stops typing
+      }
+    }
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, [searchQuery, ingredientsInput, searchMode, onSearch, onSearchByIngredients]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (searchMode === 'query' && searchQuery.trim()) {
+      lastSearchedQueryRef.current = searchQuery.trim();
       onSearch(searchQuery);
     } else if (searchMode === 'ingredients' && ingredientsInput.trim()) {
+      lastSearchedIngredientsRef.current = ingredientsInput.trim();
       const ingredients = ingredientsInput
-        .split(',')
+        .split(/[\s,]+/) // Split by spaces or commas
         .map(i => i.trim())
         .filter(i => i.length > 0);
       onSearchByIngredients(ingredients);
@@ -34,6 +86,11 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
   const handleReset = () => {
     setSearchQuery('');
     setIngredientsInput('');
+    lastSearchedQueryRef.current = '';
+    lastSearchedIngredientsRef.current = '';
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
     onReset();
   };
 
@@ -70,16 +127,16 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search for recipes..."
-            className="w-full px-6 py-4 font-['Roboto_Mono',monospace] text-base border-2 border-black bg-transparent focus:outline-none focus:border-black"
+            placeholder="Start typing to search recipes..."
+            className="w-full px-6 py-4 font-['Roboto_Mono',monospace] text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
           />
         ) : (
           <input
             type="text"
             value={ingredientsInput}
             onChange={(e) => setIngredientsInput(e.target.value)}
-            placeholder="Enter ingredients (comma separated): e.g., chicken, tomato, garlic"
-            className="w-full px-6 py-4 font-['Roboto_Mono',monospace] text-base border-2 border-black bg-transparent focus:outline-none focus:border-black"
+            placeholder="Start typing ingredients: e.g., chicken rice garlic"
+            className="w-full px-6 py-4 font-['Roboto_Mono',monospace] text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
           />
         )}
         

@@ -7,6 +7,7 @@ import {
   AnimatedText,
   RecipeSearch,
   RecipeModal,
+  AnimatedGrid,
 } from "../components";
 import {
   searchRecipes,
@@ -34,7 +35,7 @@ const Home: React.FC = () => {
   const loadRandomRecipes = async () => {
     setLoading(true);
     try {
-      const data = await getRandomRecipes(8);
+      const data = await getRandomRecipes(16);
       const formattedRecipes = data.recipes.map((recipe: any) => ({
         id: recipe.id,
         image: recipe.image,
@@ -58,7 +59,7 @@ const Home: React.FC = () => {
   const handleSearch = async (query: string) => {
     setLoading(true);
     try {
-      const data = await searchRecipes(query, 8);
+      const data = await searchRecipes(query, 16);
       const formattedRecipes = data.results.map((recipe: any) => {
         // Try multiple ways to get ingredient count
         const ingredientCount =
@@ -81,7 +82,7 @@ const Home: React.FC = () => {
       setCurrentSearchType("query");
       setCurrentQuery(query);
       // Check if there are potentially more results (API returns up to 100 total)
-      setHasMoreResults(data.totalResults > 8);
+      setHasMoreResults(data.totalResults > 16);
     } catch (error: any) {
       console.error("Error searching recipes:", error);
       setRecipes([]);
@@ -93,29 +94,23 @@ const Home: React.FC = () => {
   const handleSearchByIngredients = async (ingredients: string[]) => {
     setLoading(true);
     try {
-      const data = await searchRecipesByIngredients(ingredients, 8);
-      const formattedRecipes = data.map((recipe: any) => {
-        const totalIngredients =
-          (recipe.usedIngredientCount || 0) +
-          (recipe.missedIngredientCount || 0);
+      const data = await searchRecipesByIngredients(ingredients, 16);
+      const formattedRecipes = data.results.map((recipe: any) => {
         return {
           id: recipe.id,
           image: recipe.image,
           heading: recipe.title,
-          ingredients:
-            totalIngredients > 0
-              ? `${totalIngredients} Ingredients`
-              : `${recipe.usedIngredientCount || 0} of yours`,
-          description: `You have: ${
-            recipe.usedIngredientCount || 0
-          }, Missing: ${recipe.missedIngredientCount || 0}`,
+          ingredients: recipe.totalIngredients > 0 
+            ? `${recipe.totalIngredients} Ingredients`
+            : 'Recipe',
+          description: `Matched: ${recipe.usedIngredientCount || 0} • Total: ${recipe.totalIngredients || 0}`,
         };
       });
       setRecipes(formattedRecipes);
       setCurrentSearchType("ingredients");
       setCurrentIngredients(ingredients);
-      // Ingredient search can return fewer results, so check if we got a full page
-      setHasMoreResults(data.length >= 8);
+      // Check if there are more results available
+      setHasMoreResults(data.totalResults > 16);
     } catch (error: any) {
       console.error("Error searching recipes by ingredients:", error);
       setRecipes([]);
@@ -131,7 +126,7 @@ const Home: React.FC = () => {
       const currentOffset = recipes.length;
 
       if (currentSearchType === "query") {
-        // Load more from the same search query
+        // Load more from the same search query (2 rows = 8 cards)
         const data = await searchRecipes(currentQuery, 8, currentOffset);
         newRecipes = data.results.map((recipe: any) => {
           const ingredientCount =
@@ -155,28 +150,23 @@ const Home: React.FC = () => {
           data.totalResults > currentOffset + newRecipes.length
         );
       } else if (currentSearchType === "ingredients") {
-        // Load more from ingredient search (note: Spoonacular has limited support for offset here)
-        const data = await searchRecipesByIngredients(currentIngredients, 8);
-        newRecipes = data.map((recipe: any) => {
-          const totalIngredients =
-            (recipe.usedIngredientCount || 0) +
-            (recipe.missedIngredientCount || 0);
+        // Load more from ingredient search with offset (2 rows = 8 cards)
+        const data = await searchRecipesByIngredients(currentIngredients, 8, currentOffset);
+        newRecipes = data.results.map((recipe: any) => {
           return {
             id: recipe.id,
             image: recipe.image,
             heading: recipe.title,
-            ingredients:
-              totalIngredients > 0
-                ? `${totalIngredients} Ingredients`
-                : `${recipe.usedIngredientCount || 0} of yours`,
-            description: `You have: ${
-              recipe.usedIngredientCount || 0
-            }, Missing: ${recipe.missedIngredientCount || 0}`,
+            ingredients: recipe.totalIngredients > 0 
+              ? `${recipe.totalIngredients} Ingredients`
+              : 'Recipe',
+            description: `Matched: ${recipe.usedIngredientCount || 0} • Total: ${recipe.totalIngredients || 0}`,
           };
         });
-        setHasMoreResults(newRecipes.length >= 8);
+        // Check if there are more results available
+        setHasMoreResults(data.totalResults > currentOffset + newRecipes.length);
       } else {
-        // Load more random recipes
+        // Load more random recipes (2 rows = 8 cards)
         const data = await getRandomRecipes(8);
         newRecipes = data.recipes.map((recipe: any) => ({
           id: recipe.id,
@@ -190,9 +180,17 @@ const Home: React.FC = () => {
         setHasMoreResults(true);
       }
 
-      // Only add recipes if we got results
+      // Filter out duplicates before adding new recipes
       if (newRecipes.length > 0) {
-        setRecipes([...recipes, ...newRecipes]);
+        const existingIds = new Set(recipes.map(r => r.id));
+        const uniqueNewRecipes = newRecipes.filter(recipe => !existingIds.has(recipe.id));
+        
+        if (uniqueNewRecipes.length > 0) {
+          setRecipes([...recipes, ...uniqueNewRecipes]);
+        } else {
+          // If all recipes were duplicates, try loading more
+          setHasMoreResults(false);
+        }
       } else {
         setHasMoreResults(false);
       }
@@ -267,8 +265,8 @@ const Home: React.FC = () => {
                 splitType="chars"
                 from={{ opacity: 0, y: 40 }}
                 to={{ opacity: 1, y: 0 }}
-                threshold={0.1}
-                rootMargin="-100px"
+                threshold={0.3}
+                rootMargin="0px"
                 textAlign="center"
               />
             </div>
@@ -287,20 +285,28 @@ const Home: React.FC = () => {
           {/* Recipe Cards Grid */}
           <section className="px-[21px] py-[60px] max-w-[1200px] mx-auto">
             {loading ? (
-              <div className="text-center font-['Roboto_Mono',monospace] text-xl">
+              <div className="text-center font-['Roboto_Mono',monospace] text-xl text-black">
                 Loading recipes...
               </div>
             ) : recipes.length > 0 ? (
               <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[30px] gap-y-[40px] justify-items-center">
+                <AnimatedGrid
+                  ease="power3.out"
+                  duration={0.6}
+                  stagger={0.08}
+                  animateFrom="bottom"
+                  blurToFocus={true}
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-[30px] gap-y-[40px] justify-items-center"
+                >
                   {recipes.map((recipe) => (
                     <ProductCard
                       key={recipe.id}
+                      id={recipe.id}
                       {...recipe}
                       onClick={() => setSelectedRecipeId(recipe.id)}
                     />
                   ))}
-                </div>
+                </AnimatedGrid>
 
                 {/* Load More Button */}
                 {hasMoreResults && (
@@ -316,7 +322,7 @@ const Home: React.FC = () => {
                 )}
               </>
             ) : (
-              <div className="text-center font-['Roboto_Mono',monospace] text-xl">
+              <div className="text-center font-['Roboto_Mono',monospace] text-xl text-black">
                 No recipes found. Try a different search!
               </div>
             )}

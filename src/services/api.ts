@@ -118,7 +118,8 @@ export async function searchRecipes(query: string, number: number = 12, offset: 
  */
 export async function searchRecipesByIngredients(
   ingredients: string[],
-  number: number = 12
+  number: number = 12,
+  offset: number = 0
 ): Promise<any> {
   try {
     // TheMealDB only supports single ingredient filtering in free version
@@ -135,14 +136,106 @@ export async function searchRecipesByIngredients(
       throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    // Convert to Spoonacular-like format
-    return data.meals ? data.meals.slice(0, number).map((meal: any) => ({
-      id: parseInt(meal.idMeal),
-      title: meal.strMeal,
-      image: meal.strMealThumb,
-      usedIngredientCount: 1, // Since we're filtering by one ingredient
-      missedIngredientCount: 0 // We don't have this info from TheMealDB
-    })) : [];
+    // Get the meals for this page
+    const meals = data.meals || [];
+    const mealsForPage = meals.slice(offset, offset + number);
+    
+    // Fetch full details for each meal to get accurate ingredient counts
+    const detailedMeals = await Promise.all(
+      mealsForPage.map(async (meal: any) => {
+        try {
+          const detailResponse = await fetch(
+            `${MEALDB_BASE_URL}/lookup.php?i=${meal.idMeal}`
+          );
+          const detailData = await detailResponse.json();
+          
+          if (detailData.meals && detailData.meals.length > 0) {
+            const fullMeal = detailData.meals[0];
+            const ingredientCount = countIngredients(fullMeal);
+            
+            // Count how many of the searched ingredients are in this recipe
+            const searchIngredients = ingredients.map(i => i.toLowerCase().trim());
+            let matchedCount = 0;
+            const matchedIngredients = new Set<string>();
+            
+            for (let i = 1; i <= 20; i++) {
+              const ingredient = fullMeal[`strIngredient${i}`];
+              if (ingredient && ingredient.trim()) {
+                const ingredientLower = ingredient.toLowerCase().trim();
+                
+                // Check if any search ingredient matches this recipe ingredient
+                for (const searchIngredient of searchIngredients) {
+                  // Skip if we already matched this search ingredient
+                  if (matchedIngredients.has(searchIngredient)) continue;
+                  
+                  // Match if:
+                  // 1. Exact match (e.g., "rice" === "rice")
+                  // 2. Recipe ingredient contains search term as a word (e.g., "basmati rice" contains "rice")
+                  // 3. Search term contains recipe ingredient as a word (e.g., "chicken breast" search matches "chicken")
+                  const ingredientWords = ingredientLower.split(/\s+/);
+                  const searchWords = searchIngredient.split(/\s+/);
+                  
+                  const hasMatch = 
+                    ingredientLower === searchIngredient ||
+                    ingredientWords.some(word => searchWords.includes(word) && word.length > 2) ||
+                    searchWords.some(word => ingredientWords.includes(word) && word.length > 2);
+                  
+                  if (hasMatch) {
+                    matchedIngredients.add(searchIngredient);
+                    matchedCount++;
+                    break; // Found a match for this recipe ingredient, move to next
+                  }
+                }
+              }
+            }
+            
+            return {
+              id: parseInt(meal.idMeal),
+              title: meal.strMeal,
+              image: meal.strMealThumb,
+              usedIngredientCount: matchedCount,
+              missedIngredientCount: Math.max(0, ingredientCount - matchedCount),
+              totalIngredients: ingredientCount
+            };
+          }
+          
+          // Fallback if details fetch fails
+          return {
+            id: parseInt(meal.idMeal),
+            title: meal.strMeal,
+            image: meal.strMealThumb,
+            usedIngredientCount: 1,
+            missedIngredientCount: 0,
+            totalIngredients: 0
+          };
+        } catch (error) {
+          console.error(`Error fetching details for meal ${meal.idMeal}:`, error);
+          return {
+            id: parseInt(meal.idMeal),
+            title: meal.strMeal,
+            image: meal.strMealThumb,
+            usedIngredientCount: 1,
+            missedIngredientCount: 0,
+            totalIngredients: 0
+          };
+        }
+      })
+    );
+    
+    // Sort by matched ingredients (highest first), then by total ingredients (lowest first)
+    const sortedMeals = detailedMeals.sort((a, b) => {
+      // First priority: more matched ingredients come first
+      if (b.usedIngredientCount !== a.usedIngredientCount) {
+        return b.usedIngredientCount - a.usedIngredientCount;
+      }
+      // Second priority: fewer total ingredients (simpler recipes)
+      return a.totalIngredients - b.totalIngredients;
+    });
+    
+    return {
+      results: sortedMeals,
+      totalResults: meals.length
+    };
   } catch (error) {
     console.error('Recipe search by ingredients error:', error);
     throw error;

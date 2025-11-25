@@ -64,7 +64,7 @@ export const AnimatedText: React.FC<AnimatedTextProps> = ({
         delay: delay,
         scrollTrigger: {
           trigger: textRef.current,
-          start: 'top 85%',
+          start: 'top 95%',
           toggleActions: 'play none none none',
           once: true,
         },

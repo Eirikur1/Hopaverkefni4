@@ -14,6 +14,7 @@ export { FilmGrain } from "./FilmGrain";
 export { AnimatedText } from "./AnimatedText";
 export { RecipeSearch } from "./RecipeSearch";
 export { RecipeModal } from "./RecipeModal";
+export { AnimatedGrid } from "./AnimatedGrid";
 
 // Export other components here as you create them
 // Example:

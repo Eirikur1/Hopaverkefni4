@@ -37,11 +37,11 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
       onClick={onClose}
     >
       <div
-        className="bg-[#f4eedf] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative"
+        className="bg-[#f4eedf] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative border-4 border-black"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
