@@ -75,11 +75,14 @@ export async function searchRecipes(query: string, number: number = 12, offset: 
       `${SPOONACULAR_BASE_URL}/complexSearch?query=${encodeURIComponent(query)}&number=${number}&offset=${offset}&apiKey=${SPOONACULAR_API_KEY}&addRecipeInformation=true&fillIngredients=true`
     );
     
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+    const data = await response.json();
+    
+    // Check if API returned an error
+    if (data.status === 'failure' || !response.ok) {
+      throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    return await response.json();
+    return data;
   } catch (error) {
     console.error('Recipe search error:', error);
     throw error;
@@ -99,11 +102,14 @@ export async function searchRecipesByIngredients(
       `${SPOONACULAR_BASE_URL}/findByIngredients?ingredients=${encodeURIComponent(ingredientsParam)}&number=${number}&apiKey=${SPOONACULAR_API_KEY}&ranking=2`
     );
     
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+    const data = await response.json();
+    
+    // Check if API returned an error
+    if (data.status === 'failure' || !response.ok) {
+      throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    return await response.json();
+    return data;
   } catch (error) {
     console.error('Recipe search by ingredients error:', error);
     throw error;
@@ -119,11 +125,14 @@ export async function getRecipeDetails(id: number): Promise<any> {
       `${SPOONACULAR_BASE_URL}/${id}/information?apiKey=${SPOONACULAR_API_KEY}`
     );
     
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+    const data = await response.json();
+    
+    // Check if API returned an error
+    if (data.status === 'failure' || !response.ok) {
+      throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    return await response.json();
+    return data;
   } catch (error) {
     console.error('Recipe details error:', error);
     throw error;
@@ -139,11 +148,14 @@ export async function getRandomRecipes(number: number = 8): Promise<any> {
       `${SPOONACULAR_BASE_URL}/random?number=${number}&apiKey=${SPOONACULAR_API_KEY}`
     );
     
-    if (!response.ok) {
-      throw new Error(`API Error: ${response.statusText}`);
+    const data = await response.json();
+    
+    // Check if API returned an error
+    if (data.status === 'failure' || !response.ok) {
+      throw new Error(data.message || `API Error: ${response.statusText}`);
     }
     
-    return await response.json();
+    return data;
   } catch (error) {
     console.error('Random recipes error:', error);
     throw error;

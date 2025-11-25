@@ -25,6 +25,7 @@ const Home: React.FC = () => {
   const [currentQuery, setCurrentQuery] = useState<string>("");
   const [currentIngredients, setCurrentIngredients] = useState<string[]>([]);
   const [hasMoreResults, setHasMoreResults] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Load random recipes on mount
   useEffect(() => {
@@ -33,6 +34,7 @@ const Home: React.FC = () => {
 
   const loadRandomRecipes = async () => {
     setLoading(true);
+    setError(null);
     try {
       const data = await getRandomRecipes(8);
       const formattedRecipes = data.recipes.map((recipe: any) => ({
@@ -47,8 +49,9 @@ const Home: React.FC = () => {
       setRecipes(formattedRecipes);
       setCurrentSearchType("random");
       setHasMoreResults(true);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error loading recipes:", error);
+      setError(error?.message || "Failed to load recipes. The API may have reached its daily limit.");
     } finally {
       setLoading(false);
     }
@@ -56,6 +59,7 @@ const Home: React.FC = () => {
 
   const handleSearch = async (query: string) => {
     setLoading(true);
+    setError(null);
     try {
       const data = await searchRecipes(query, 8);
       const formattedRecipes = data.results.map((recipe: any) => {
@@ -81,8 +85,10 @@ const Home: React.FC = () => {
       setCurrentQuery(query);
       // Check if there are potentially more results (API returns up to 100 total)
       setHasMoreResults(data.totalResults > 8);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error searching recipes:", error);
+      setError(error?.message || "Failed to search recipes. The API may have reached its daily limit.");
+      setRecipes([]);
     } finally {
       setLoading(false);
     }
@@ -90,6 +96,7 @@ const Home: React.FC = () => {
 
   const handleSearchByIngredients = async (ingredients: string[]) => {
     setLoading(true);
+    setError(null);
     try {
       const data = await searchRecipesByIngredients(ingredients, 8);
       const formattedRecipes = data.map((recipe: any) => {
@@ -114,8 +121,10 @@ const Home: React.FC = () => {
       setCurrentIngredients(ingredients);
       // Ingredient search can return fewer results, so check if we got a full page
       setHasMoreResults(data.length >= 8);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error searching recipes by ingredients:", error);
+      setError(error?.message || "Failed to search recipes. The API may have reached its daily limit.");
+      setRecipes([]);
     } finally {
       setLoading(false);
     }
@@ -284,6 +293,14 @@ const Home: React.FC = () => {
             {loading ? (
               <div className="text-center font-['Roboto_Mono',monospace] text-xl">
                 Loading recipes...
+              </div>
+            ) : error ? (
+              <div className="text-center font-['Roboto_Mono',monospace] text-xl">
+                <div className="text-red-600 mb-4">⚠️ Error</div>
+                <div className="text-base max-w-2xl mx-auto">{error}</div>
+                <div className="text-sm mt-4 text-gray-600">
+                  Please try again later or contact support if the problem persists.
+                </div>
               </div>
             ) : recipes.length > 0 ? (
               <>
