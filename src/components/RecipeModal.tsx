@@ -54,7 +54,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
         </button>
 
         {loading ? (
-          <div className="p-12 text-center font-['Roboto_Mono',monospace]">
+          <div className="p-12 text-center font-['Roboto_Mono',monospace] text-black">
             Loading recipe details...
           </div>
         ) : recipe ? (
@@ -74,7 +74,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
             </h2>
 
             {/* Recipe Info */}
-            <div className="flex gap-6 mb-6 font-['Roboto_Mono',monospace] text-sm">
+            <div className="flex gap-6 mb-6 font-['Roboto_Mono',monospace] text-sm text-black">
               {recipe.readyInMinutes && (
                 <div>
                   <span className="font-bold">Time:</span> {recipe.readyInMinutes} min
@@ -96,10 +96,10 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
             {/* Ingredients */}
             {recipe.extendedIngredients && recipe.extendedIngredients.length > 0 && (
               <div className="mb-6">
-                <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl mb-3">
+                <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-3">
                   Ingredients
                 </h3>
-                <ul className="font-['Roboto_Mono',monospace] text-sm space-y-2">
+                <ul className="font-['Roboto_Mono',monospace] text-sm text-black space-y-2">
                   {recipe.extendedIngredients.map((ingredient: any, index: number) => (
                     <li key={index} className="flex items-start">
                       <span className="mr-2">•</span>
@@ -115,11 +115,11 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
             {/* Instructions */}
             {recipe.instructions && (
               <div className="mb-6">
-                <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl mb-3">
+                <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-3">
                   Instructions
                 </h3>
                 <div
-                  className="font-['Roboto_Mono',monospace] text-sm text-gray-700"
+                  className="font-['Roboto_Mono',monospace] text-sm text-black"
                   dangerouslySetInnerHTML={{
                     __html: recipe.instructions,
                   }}
@@ -134,7 +134,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
                   href={recipe.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-['Roboto_Mono',monospace] text-sm underline hover:no-underline"
+                  className="font-['Roboto_Mono',monospace] text-sm text-black underline hover:no-underline"
                 >
                   View Original Recipe →
                 </a>
@@ -142,7 +142,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
             )}
           </div>
         ) : (
-          <div className="p-12 text-center font-['Roboto_Mono',monospace]">
+          <div className="p-12 text-center font-['Roboto_Mono',monospace] text-black">
             Recipe not found
           </div>
         )}

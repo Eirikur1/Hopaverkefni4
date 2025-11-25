@@ -98,13 +98,25 @@ export async function searchRecipes(query: string, number: number = 12, offset: 
     // TheMealDB returns {meals: [...]} or {meals: null} if no results
     // Convert to Spoonacular-like format for consistency
     return {
-      results: data.meals ? data.meals.slice(offset, offset + number).map((meal: any) => ({
-        id: parseInt(meal.idMeal),
-        title: meal.strMeal,
-        image: meal.strMealThumb,
-        summary: meal.strInstructions,
-        extendedIngredients: Array.from({ length: countIngredients(meal) })
-      })) : [],
+      results: data.meals ? data.meals.slice(offset, offset + number).map((meal: any) => {
+        // Extract ingredient names
+        const ingredients = [];
+        for (let i = 1; i <= 20; i++) {
+          const ingredient = meal[`strIngredient${i}`];
+          if (ingredient && ingredient.trim()) {
+            ingredients.push(ingredient.trim());
+          }
+        }
+        
+        return {
+          id: parseInt(meal.idMeal),
+          title: meal.strMeal,
+          image: meal.strMealThumb,
+          summary: meal.strInstructions,
+          extendedIngredients: Array.from({ length: ingredients.length }),
+          ingredientNames: ingredients
+        };
+      }) : [],
       totalResults: data.meals ? data.meals.length : 0
     };
   } catch (error) {
@@ -189,13 +201,23 @@ export async function searchRecipesByIngredients(
               }
             }
             
+            // Extract all ingredient names
+            const allIngredientNames = [];
+            for (let i = 1; i <= 20; i++) {
+              const ingredient = fullMeal[`strIngredient${i}`];
+              if (ingredient && ingredient.trim()) {
+                allIngredientNames.push(ingredient.trim());
+              }
+            }
+            
             return {
               id: parseInt(meal.idMeal),
               title: meal.strMeal,
               image: meal.strMealThumb,
               usedIngredientCount: matchedCount,
               missedIngredientCount: Math.max(0, ingredientCount - matchedCount),
-              totalIngredients: ingredientCount
+              totalIngredients: ingredientCount,
+              ingredientNames: allIngredientNames
             };
           }
           
@@ -206,7 +228,8 @@ export async function searchRecipesByIngredients(
             image: meal.strMealThumb,
             usedIngredientCount: 1,
             missedIngredientCount: 0,
-            totalIngredients: 0
+            totalIngredients: 0,
+            ingredientNames: []
           };
         } catch (error) {
           console.error(`Error fetching details for meal ${meal.idMeal}:`, error);
@@ -216,7 +239,8 @@ export async function searchRecipesByIngredients(
             image: meal.strMealThumb,
             usedIngredientCount: 1,
             missedIngredientCount: 0,
-            totalIngredients: 0
+            totalIngredients: 0,
+            ingredientNames: []
           };
         }
       })
@@ -315,13 +339,25 @@ export async function getRandomRecipes(number: number = 8): Promise<any> {
       .map(data => data.meals[0]);
     
     return {
-      recipes: meals.map((meal: any) => ({
-        id: parseInt(meal.idMeal),
-        title: meal.strMeal,
-        image: meal.strMealThumb,
-        summary: meal.strInstructions,
-        extendedIngredients: Array.from({ length: countIngredients(meal) })
-      }))
+      recipes: meals.map((meal: any) => {
+        // Extract ingredient names
+        const ingredients = [];
+        for (let i = 1; i <= 20; i++) {
+          const ingredient = meal[`strIngredient${i}`];
+          if (ingredient && ingredient.trim()) {
+            ingredients.push(ingredient.trim());
+          }
+        }
+        
+        return {
+          id: parseInt(meal.idMeal),
+          title: meal.strMeal,
+          image: meal.strMealThumb,
+          summary: meal.strInstructions,
+          extendedIngredients: Array.from({ length: ingredients.length }),
+          ingredientNames: ingredients
+        };
+      })
     };
   } catch (error) {
     console.error('Random recipes error:', error);

@@ -36,15 +36,20 @@ const Home: React.FC = () => {
     setLoading(true);
     try {
       const data = await getRandomRecipes(16);
-      const formattedRecipes = data.recipes.map((recipe: any) => ({
-        id: recipe.id,
-        image: recipe.image,
-        heading: recipe.title,
-        ingredients: `${recipe.extendedIngredients?.length || 0} Ingredients`,
-        description:
-          recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) + "..." ||
-          "Delicious recipe",
-      }));
+      const formattedRecipes = data.recipes.map((recipe: any) => {
+        const ingredientCount = recipe.extendedIngredients?.length || 0;
+        const ingredientNames = recipe.ingredientNames || [];
+        const firstThree = ingredientNames.slice(0, 3).join(', ');
+        const hasMore = ingredientNames.length > 3;
+        
+        return {
+          id: recipe.id,
+          image: recipe.image,
+          heading: recipe.title,
+          ingredients: `${ingredientCount} Ingredients`,
+          description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
+        };
+      });
       setRecipes(formattedRecipes);
       setCurrentSearchType("random");
       setHasMoreResults(true);
@@ -66,6 +71,9 @@ const Home: React.FC = () => {
           recipe.extendedIngredients?.length ||
           recipe.nutrition?.ingredients?.length ||
           0;
+        const ingredientNames = recipe.ingredientNames || [];
+        const firstThree = ingredientNames.slice(0, 3).join(', ');
+        const hasMore = ingredientNames.length > 3;
 
         return {
           id: recipe.id,
@@ -73,9 +81,7 @@ const Home: React.FC = () => {
           heading: recipe.title,
           ingredients:
             ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
-          description:
-            recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) + "..." ||
-            "Delicious recipe",
+          description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
         };
       });
       setRecipes(formattedRecipes);
@@ -96,14 +102,23 @@ const Home: React.FC = () => {
     try {
       const data = await searchRecipesByIngredients(ingredients, 16);
       const formattedRecipes = data.results.map((recipe: any) => {
+        const ingredientNames = recipe.ingredientNames || [];
+        const firstThree = ingredientNames.slice(0, 3).join(', ');
+        const hasMore = ingredientNames.length > 3;
+        const matchedText = recipe.usedIngredientCount > 0 
+          ? ` · ${recipe.usedIngredientCount} matched`
+          : '';
+        
         return {
           id: recipe.id,
           image: recipe.image,
           heading: recipe.title,
           ingredients: recipe.totalIngredients > 0 
-            ? `${recipe.totalIngredients} Ingredients`
+            ? `${recipe.totalIngredients} Ingredients${matchedText}`
             : 'Recipe',
-          description: `Matched: ${recipe.usedIngredientCount || 0} • Total: ${recipe.totalIngredients || 0}`,
+          description: firstThree 
+            ? (hasMore ? `${firstThree}...` : firstThree)
+            : "Delicious recipe",
         };
       });
       setRecipes(formattedRecipes);
@@ -133,6 +148,9 @@ const Home: React.FC = () => {
             recipe.extendedIngredients?.length ||
             recipe.nutrition?.ingredients?.length ||
             0;
+          const ingredientNames = recipe.ingredientNames || [];
+          const firstThree = ingredientNames.slice(0, 3).join(', ');
+          const hasMore = ingredientNames.length > 3;
 
           return {
             id: recipe.id,
@@ -140,9 +158,7 @@ const Home: React.FC = () => {
             heading: recipe.title,
             ingredients:
               ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
-            description:
-              recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) +
-                "..." || "Delicious recipe",
+            description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
           };
         });
         // Check if there are more results available
@@ -153,14 +169,23 @@ const Home: React.FC = () => {
         // Load more from ingredient search with offset (2 rows = 8 cards)
         const data = await searchRecipesByIngredients(currentIngredients, 8, currentOffset);
         newRecipes = data.results.map((recipe: any) => {
+          const ingredientNames = recipe.ingredientNames || [];
+          const firstThree = ingredientNames.slice(0, 3).join(', ');
+          const hasMore = ingredientNames.length > 3;
+          const matchedText = recipe.usedIngredientCount > 0 
+            ? ` - ${recipe.usedIngredientCount} matched`
+            : '';
+          
           return {
             id: recipe.id,
             image: recipe.image,
             heading: recipe.title,
             ingredients: recipe.totalIngredients > 0 
-              ? `${recipe.totalIngredients} Ingredients`
+              ? `${recipe.totalIngredients} Ingredients${matchedText}`
               : 'Recipe',
-            description: `Matched: ${recipe.usedIngredientCount || 0} • Total: ${recipe.totalIngredients || 0}`,
+            description: firstThree 
+              ? (hasMore ? `${firstThree}...` : firstThree)
+              : "Delicious recipe",
           };
         });
         // Check if there are more results available
@@ -168,15 +193,20 @@ const Home: React.FC = () => {
       } else {
         // Load more random recipes (2 rows = 8 cards)
         const data = await getRandomRecipes(8);
-        newRecipes = data.recipes.map((recipe: any) => ({
-          id: recipe.id,
-          image: recipe.image,
-          heading: recipe.title,
-          ingredients: `${recipe.extendedIngredients?.length || 0} Ingredients`,
-          description:
-            recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) + "..." ||
-            "Delicious recipe",
-        }));
+        newRecipes = data.recipes.map((recipe: any) => {
+          const ingredientCount = recipe.extendedIngredients?.length || 0;
+          const ingredientNames = recipe.ingredientNames || [];
+          const firstThree = ingredientNames.slice(0, 3).join(', ');
+          const hasMore = ingredientNames.length > 3;
+          
+          return {
+            id: recipe.id,
+            image: recipe.image,
+            heading: recipe.title,
+            ingredients: `${ingredientCount} Ingredients`,
+            description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
+          };
+        });
         setHasMoreResults(true);
       }
 
