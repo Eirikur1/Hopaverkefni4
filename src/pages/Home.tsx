@@ -479,6 +479,15 @@ const Home: React.FC = () => {
               <span className="text-xl sm:text-2xl md:text-[36px]">2025</span>
             </p>
           </div>
+
+          {/* Scroll to Top Button */}
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="fixed bottom-4 left-4 sm:bottom-8 sm:left-8 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200 flex items-center justify-center font-['Roboto_Mono',monospace] text-2xl font-bold shadow-lg"
+            aria-label="Scroll to top"
+          >
+            ↑
+          </button>
         </div>
       </ClickSpark>
 
