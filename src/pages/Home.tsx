@@ -366,22 +366,24 @@ const Home: React.FC = () => {
 
           {/* Middle Section with Text and Fish */}
           <section className="flex justify-center items-center gap-4 sm:gap-8 md:gap-[156px] mt-8 sm:mt-12 md:mt-[120px] mb-8 sm:mb-12 md:mb-[120px] px-4 sm:px-8 overflow-x-hidden">
-            <div className="font-['Roboto_Mono',monospace] text-xs sm:text-sm md:text-base lg:text-[20px] text-black w-[100px] sm:w-[180px] md:w-[300px] lg:w-[525px] flex-shrink-0 text-left">
-              <AnimatedText className="font-bold mb-1 sm:mb-2" delay={0.2}>
-                Elegant
-              </AnimatedText>
-              <AnimatedText className="font-normal" delay={0.4}>
-                dishes from the ingredients in your kitchen.
-              </AnimatedText>
+            <div className="font-['Roboto_Mono',monospace] text-xs sm:text-sm md:text-base lg:text-[20px] text-black w-[100px] sm:w-[180px] md:w-[300px] lg:w-[525px] flex-shrink-0 text-left flex items-center">
+              <div>
+                <AnimatedText className="font-bold mb-1 sm:mb-2" delay={0.2}>
+                  Elegant
+                </AnimatedText>
+                <AnimatedText className="font-normal" delay={0.4}>
+                  dishes from the ingredients in your kitchen.
+                </AnimatedText>
+              </div>
             </div>
 
-            <div className="flex items-center justify-center h-full flex-shrink-0 self-center">
+            <div className="flex items-center justify-center flex-shrink-0">
               <img
                 src={`${
                   import.meta.env.BASE_URL
                 }vectors/decorative/dotted_line.svg`}
                 alt="Decorative dotted line"
-                className="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[514px] w-[10px] sm:w-[15px] md:w-[20px] mx-auto"
+                className="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[514px] w-[10px] sm:w-[15px] md:w-[20px]"
               />
             </div>
 
