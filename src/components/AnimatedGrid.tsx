@@ -56,11 +56,17 @@ export const AnimatedGrid: React.FC<AnimatedGridProps> = ({
             break;
         }
 
+        // Set initial state immediately to make cards visible
+        gsap.set(item, {
+          opacity: 0.3, // Start with some visibility
+        });
+
         // Animate from initial position
         gsap.fromTo(
           item,
           {
             ...startPosition,
+            opacity: 0.3,
             ...(blurToFocus && { filter: 'blur(4px)' }),
           },
           {

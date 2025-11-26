@@ -327,19 +327,39 @@ export async function getRandomRecipes(number: number = 8): Promise<any> {
   try {
     // TheMealDB free API only gives 1 random meal at a time
     // We need to make multiple requests to get multiple random meals
+    // Use Promise.allSettled to handle failures gracefully
     const promises = Array.from({ length: number }, () =>
-      fetch(`${MEALDB_BASE_URL}/random.php`).then(res => res.json())
+      fetch(`${MEALDB_BASE_URL}/random.php`, { 
+        signal: AbortSignal.timeout(5000) // 5 second timeout
+      })
+        .then(res => res.json())
+        .catch(err => {
+          console.warn('Failed to fetch random recipe:', err);
+          return null;
+        })
     );
     
-    const results = await Promise.all(promises);
+    const results = await Promise.allSettled(promises);
     
-    // Extract meals from all responses
+    // Extract successful meals
     const meals = results
-      .filter(data => data.meals && data.meals.length > 0)
+      .filter(result => result.status === 'fulfilled' && result.value)
+      .map(result => (result as PromiseFulfilledResult<any>).value)
+      .filter(data => data && data.meals && data.meals.length > 0)
       .map(data => data.meals[0]);
     
+    // If we got fewer than expected, log it
+    if (meals.length < number) {
+      console.warn(`Only fetched ${meals.length} out of ${number} requested recipes`);
+    }
+    
+    // Remove duplicates by ID
+    const uniqueMeals = Array.from(
+      new Map(meals.map(meal => [meal.idMeal, meal])).values()
+    );
+    
     return {
-      recipes: meals.map((meal: any) => {
+      recipes: uniqueMeals.map((meal: any) => {
         // Extract ingredient names
         const ingredients = [];
         for (let i = 1; i <= 20; i++) {

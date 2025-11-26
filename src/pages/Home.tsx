@@ -328,10 +328,10 @@ const Home: React.FC = () => {
               <>
                 <AnimatedGrid
                   ease="power3.out"
-                  duration={0.6}
-                  stagger={0.08}
+                  duration={0.4}
+                  stagger={0.03}
                   animateFrom="bottom"
-                  blurToFocus={true}
+                  blurToFocus={false}
                   className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 sm:gap-x-4 md:gap-x-[30px] gap-y-4 sm:gap-y-6 md:gap-y-[40px] justify-items-center"
                 >
                   {recipes.map((recipe) => (
