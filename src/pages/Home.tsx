@@ -483,7 +483,7 @@ const Home: React.FC = () => {
           {/* Scroll to Top Button */}
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-4 left-4 sm:bottom-8 sm:left-8 z-50 w-12 h-12 sm:w-14 sm:h-14 bg-black border-2 border-black hover:bg-[#f4eedf] active:scale-95 transition-all duration-200 flex items-center justify-center shadow-lg group"
+            className="fixed bottom-4 left-4 sm:bottom-8 sm:left-8 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black border-2 border-black hover:bg-[#f4eedf] active:scale-95 transition-all duration-200 flex items-center justify-center shadow-lg group"
             aria-label="Scroll to top"
           >
             <img
