@@ -366,7 +366,7 @@ const Home: React.FC = () => {
 
           {/* Middle Section with Text and Fish */}
           <section className="flex justify-center items-center gap-4 sm:gap-8 md:gap-[156px] mt-8 sm:mt-12 md:mt-[120px] mb-8 sm:mb-12 md:mb-[120px] px-4 sm:px-8 overflow-x-hidden">
-            <div className="font-['Roboto_Mono',monospace] text-sm sm:text-base md:text-lg lg:text-[20px] text-black w-[120px] sm:w-[200px] md:w-[300px] lg:w-[525px] flex-shrink-0">
+            <div className="font-['Roboto_Mono',monospace] text-xs sm:text-sm md:text-base lg:text-[20px] text-black w-[100px] sm:w-[180px] md:w-[300px] lg:w-[525px] flex-shrink-0 text-left">
               <AnimatedText className="font-bold mb-1 sm:mb-2" delay={0.2}>
                 Elegant
               </AnimatedText>
