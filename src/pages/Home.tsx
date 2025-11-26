@@ -457,17 +457,19 @@ const Home: React.FC = () => {
           </footer>
 
           {/* Animated Logo Loop Divider */}
-          <div className="w-full my-8 h-[80px]">
-            <LogoLoop
-              logos={foodIcons}
-              speed={120}
-              direction="right"
-              logoHeight={48}
-              gap={60}
-              hoverSpeed={0}
-              scaleOnHover
-              ariaLabel="Food icons"
-            />
+          <div className="w-full my-4 sm:my-6 md:my-8 overflow-hidden">
+            <div className="h-[36px] sm:h-[48px] md:h-[64px] lg:h-[80px] flex items-center">
+              <LogoLoop
+                logos={foodIcons}
+                speed={120}
+                direction="right"
+                logoHeight={36}
+                gap={50}
+                hoverSpeed={0}
+                scaleOnHover={false}
+                ariaLabel="Food icons"
+              />
+            </div>
           </div>
 
           {/* Copyright */}
