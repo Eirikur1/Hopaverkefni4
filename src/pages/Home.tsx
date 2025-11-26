@@ -473,10 +473,10 @@ const Home: React.FC = () => {
           </div>
 
           {/* Copyright */}
-          <div className="flex justify-end px-8 pb-8">
+          <div className="flex justify-end px-4 sm:px-8 pb-4 sm:pb-8">
             <p className="font-['Roboto_Mono',monospace] font-medium text-black uppercase text-right">
-              <span className="text-[48px]">©</span>
-              <span className="text-[36px]">2025</span>
+              <span className="text-2xl sm:text-3xl md:text-[48px]">©</span>
+              <span className="text-xl sm:text-2xl md:text-[36px]">2025</span>
             </p>
           </div>
         </div>
