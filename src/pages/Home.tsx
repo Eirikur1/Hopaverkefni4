@@ -365,9 +365,9 @@ const Home: React.FC = () => {
           </section>
 
           {/* Middle Section with Text and Fish */}
-          <section className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-[156px] mt-12 md:mt-[120px] mb-12 md:mb-[120px] px-4 sm:px-8">
-            <div className="font-['Roboto_Mono',monospace] text-base sm:text-lg md:text-[20px] text-black w-full md:w-[525px] text-center md:text-left">
-              <AnimatedText className="font-bold mb-2" delay={0.2}>
+          <section className="flex justify-center items-center gap-4 sm:gap-8 md:gap-[156px] mt-8 sm:mt-12 md:mt-[120px] mb-8 sm:mb-12 md:mb-[120px] px-4 sm:px-8 overflow-x-hidden">
+            <div className="font-['Roboto_Mono',monospace] text-sm sm:text-base md:text-lg lg:text-[20px] text-black w-[120px] sm:w-[200px] md:w-[300px] lg:w-[525px] flex-shrink-0">
+              <AnimatedText className="font-bold mb-1 sm:mb-2" delay={0.2}>
                 Elegant
               </AnimatedText>
               <AnimatedText className="font-normal" delay={0.4}>
@@ -375,17 +375,17 @@ const Home: React.FC = () => {
               </AnimatedText>
             </div>
 
-            <div className="hidden md:flex items-center justify-center h-full">
+            <div className="flex items-center justify-center h-full flex-shrink-0">
               <img
                 src={`${
                   import.meta.env.BASE_URL
                 }vectors/decorative/dotted_line.svg`}
                 alt="Decorative dotted line"
-                className="h-[514px] w-[20px] mx-auto"
+                className="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[514px] w-[10px] sm:w-[15px] md:w-[20px]"
               />
             </div>
 
-            <div className="w-full max-w-[300px] md:w-[474px] aspect-square md:h-[545px] flex items-center justify-center">
+            <div className="w-[150px] sm:w-[250px] md:w-[350px] lg:w-[474px] h-[180px] sm:h-[280px] md:h-[400px] lg:h-[545px] flex items-center justify-center flex-shrink-0">
               <img
                 src={`${
                   import.meta.env.BASE_URL
@@ -412,8 +412,8 @@ const Home: React.FC = () => {
 
           {/* Footer Section */}
           <footer className="flex justify-center px-4 sm:px-8 py-8 sm:py-[60px] mt-12 sm:mt-[80px]">
-            <div className="flex flex-col md:flex-row w-full max-w-[1130px] justify-between items-center gap-8 md:gap-0">
-              <div className="w-full max-w-[250px] sm:max-w-[300px] md:w-[400px] aspect-[400/560] md:h-[560px] flex items-center justify-center">
+            <div className="flex w-full max-w-[1130px] justify-between items-center gap-4 sm:gap-8">
+              <div className="w-[120px] sm:w-[200px] md:w-[300px] lg:w-[400px] h-[170px] sm:h-[280px] md:h-[420px] lg:h-[560px] flex items-center justify-center flex-shrink-0">
                 <img
                   src={`${
                     import.meta.env.BASE_URL
@@ -423,9 +423,9 @@ const Home: React.FC = () => {
                 />
               </div>
 
-              <div className="font-['Roboto_Mono',monospace] font-medium text-xl sm:text-2xl md:text-[36px] text-black uppercase flex flex-col gap-4 sm:gap-6 md:gap-[30px] text-center md:text-left">
+              <div className="font-['Roboto_Mono',monospace] font-medium text-xs sm:text-base md:text-2xl lg:text-[36px] text-black uppercase flex flex-col gap-2 sm:gap-4 md:gap-6 lg:gap-[30px]">
                 <div className="leading-none">
-                  <AnimatedText className="mb-2" delay={0.2}>
+                  <AnimatedText className="mb-1 sm:mb-2" delay={0.2}>
                     COntact@MENú.com
                   </AnimatedText>
                   <AnimatedText delay={0.3}>(+354)1234 0123</AnimatedText>
