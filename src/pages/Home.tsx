@@ -375,13 +375,13 @@ const Home: React.FC = () => {
               </AnimatedText>
             </div>
 
-            <div className="flex items-center justify-center h-full flex-shrink-0">
+            <div className="flex items-center justify-center h-full flex-shrink-0 self-center">
               <img
                 src={`${
                   import.meta.env.BASE_URL
                 }vectors/decorative/dotted_line.svg`}
                 alt="Decorative dotted line"
-                className="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[514px] w-[10px] sm:w-[15px] md:w-[20px]"
+                className="h-[200px] sm:h-[300px] md:h-[400px] lg:h-[514px] w-[10px] sm:w-[15px] md:w-[20px] mx-auto"
               />
             </div>
 
