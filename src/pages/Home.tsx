@@ -332,7 +332,7 @@ const Home: React.FC = () => {
                   stagger={0.08}
                   animateFrom="bottom"
                   blurToFocus={true}
-                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-[30px] gap-y-6 sm:gap-y-[40px] justify-items-center"
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 sm:gap-x-4 md:gap-x-[30px] gap-y-4 sm:gap-y-6 md:gap-y-[40px] justify-items-center"
                 >
                   {recipes.map((recipe) => (
                     <ProductCard
