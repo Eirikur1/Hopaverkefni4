@@ -1,6 +1,6 @@
 /**
  * ProductCard Component
- * 
+ *
  * A modern recipe card with neubrutalism design featuring:
  * - Dual-layer offset shadow effect (black shadow behind cream card)
  * - Vintage film-to-digital color effect on hover
@@ -8,10 +8,10 @@
  * - Responsive interactions and animations
  */
 
-import React, { useRef, useEffect, useState } from 'react';
-import { AnimatedText } from './AnimatedText';
-import scheduleIcon from '../assets/schedule_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
-import groupIcon from '../assets/group_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+import React, { useRef, useEffect, useState } from "react";
+import { AnimatedText } from "./AnimatedText";
+import scheduleIcon from "../assets/schedule_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
+import groupIcon from "../assets/group_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg";
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -44,34 +44,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   // --------------------------------------------------------------------------
   // STATE & REFS
   // --------------------------------------------------------------------------
-  
+
   const textRef = useRef<HTMLDivElement>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
   // --------------------------------------------------------------------------
   // EFFECTS
   // --------------------------------------------------------------------------
-  
+
   // Check if title text overflows container (for scroll effect)
   useEffect(() => {
     const checkOverflow = () => {
       if (textRef.current) {
-        const isTextOverflowing = textRef.current.scrollWidth > textRef.current.clientWidth;
+        const isTextOverflowing =
+          textRef.current.scrollWidth > textRef.current.clientWidth;
         setIsOverflowing(isTextOverflowing);
       }
     };
 
     checkOverflow();
-    window.addEventListener('resize', checkOverflow);
-    return () => window.removeEventListener('resize', checkOverflow);
+    window.addEventListener("resize", checkOverflow);
+    return () => window.removeEventListener("resize", checkOverflow);
   }, [heading]);
 
   // --------------------------------------------------------------------------
   // RENDER
   // --------------------------------------------------------------------------
-  
+
   return (
-    <div 
+    <div
       data-animate-card
       data-card-key={id}
       className="group relative w-full max-w-[240px] h-[300px] cursor-pointer"
@@ -79,29 +80,35 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     >
       {/* Black shadow layer (background) - moves on hover */}
       <div className="absolute inset-0 bg-black rounded-[12px] transition-all duration-300 group-hover:translate-x-1 group-hover:translate-y-1" />
-      
+
       {/* Main card layer (foreground) - moves opposite direction on hover */}
       <div className="absolute inset-0 bg-[#f4eedf] rounded-[12px] border-2 border-black transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 flex flex-col overflow-hidden">
-        
         {/* ====== IMAGE SECTION ====== */}
         <div className="relative w-full h-[200px] overflow-hidden border-b-2 border-black">
-          <img 
-            src={image} 
+          <img
+            src={image}
             alt={heading}
             className="w-full h-full object-cover sepia-[0.2] contrast-90 brightness-95 group-hover:sepia-0 group-hover:contrast-110 group-hover:brightness-100 transition-all duration-500"
           />
         </div>
-        
+
         {/* ====== CONTENT SECTION ====== */}
         <div className="flex-1 p-4 flex flex-col justify-between bg-[#f4eedf]">
-          
           {/* Title with scroll animation for long text */}
-          <div ref={textRef} className="overflow-hidden relative h-[19px] flex items-center">
-            <div className={`whitespace-nowrap inline-flex items-baseline ${isOverflowing ? 'group-hover:animate-[scroll_10s_linear_infinite]' : ''}`}>
-              
+          <div
+            ref={textRef}
+            className="overflow-hidden relative h-[19px] flex items-center"
+          >
+            <div
+              className={`whitespace-nowrap inline-flex items-baseline ${
+                isOverflowing
+                  ? "group-hover:animate-[scroll_10s_linear_infinite]"
+                  : ""
+              }`}
+            >
               {/* Original title text */}
               <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px]">
-                <AnimatedText 
+                <AnimatedText
                   className="inline"
                   delay={0.2}
                   duration={1}
@@ -110,10 +117,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                   {heading}
                 </AnimatedText>
               </span>
-              
+
               {/* Duplicate title for seamless scroll loop (only if overflowing) */}
               {isOverflowing && (
-                <span 
+                <span
                   className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] pl-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   aria-hidden="true"
                 >
@@ -122,17 +129,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               )}
             </div>
           </div>
-          
+
           {/* Recipe info section */}
           <div className="flex flex-col gap-1.5 pt-2 border-t border-black/20">
             {/* Time and Servings */}
             <div className="flex items-center gap-2 text-[10px] text-black/70 font-['Roboto_Mono',sans-serif] uppercase tracking-wider">
               {readyInMinutes && (
                 <span className="flex items-center gap-1">
-                  <img 
-                    src={scheduleIcon} 
-                    alt="" 
-                    className="w-3 h-3 opacity-70"
+                  <img
+                    src={scheduleIcon}
+                    alt=""
+                    className="w-3 h-3 brightness-0"
                     aria-hidden="true"
                   />
                   {readyInMinutes} min
@@ -140,20 +147,20 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               )}
               {servings && (
                 <span className="flex items-center gap-1">
-                  <img 
-                    src={groupIcon} 
-                    alt="" 
-                    className="w-3 h-3 opacity-70"
+                  <img
+                    src={groupIcon}
+                    alt=""
+                    className="w-3 h-3 brightness-0"
                     aria-hidden="true"
                   />
                   {servings}
                 </span>
               )}
             </div>
-            
+
             {/* Ingredients with dot indicator */}
             <div className="flex items-center justify-between">
-              <AnimatedText 
+              <AnimatedText
                 className="font-['Roboto_Mono',sans-serif] text-[11px] text-black/70 uppercase tracking-wider truncate"
                 delay={0.4}
                 duration={1}
@@ -161,9 +168,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               >
                 {ingredients}
               </AnimatedText>
-              
+
               {/* Dot indicator that scales on hover */}
-              <div 
+              <div
                 className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300"
                 aria-hidden="true"
               />
