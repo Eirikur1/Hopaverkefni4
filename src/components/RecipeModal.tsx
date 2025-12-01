@@ -38,117 +38,131 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-4"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-black/50"
       onClick={onClose}
     >
-      <div
-        className="bg-[#f4eedf] w-full max-w-4xl max-h-[90vh] overflow-y-auto relative border-2 sm:border-4 border-black"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close button */}
-        <IconButton
-          onClick={onClose}
-          className="sticky top-2 sm:top-4 right-2 sm:right-4 float-right text-xl sm:text-2xl z-10"
-          shape="square"
-          size="sm"
-          aria-label="Close modal"
+      {/* Neubrutalism modal container */}
+      <div className="relative w-full max-w-4xl max-h-[90vh]">
+        {/* Black shadow layer */}
+        <div className="absolute inset-0 bg-black rounded-[12px] translate-x-2 translate-y-2" />
+        
+        {/* Main modal */}
+        <div
+          className="relative bg-[#f4eedf] w-full max-h-[90vh] overflow-y-auto border-4 border-black rounded-[12px]"
+          onClick={(e) => e.stopPropagation()}
         >
-          ×
-        </IconButton>
-
-        {loading ? (
-          <div className="p-6 sm:p-12 text-center font-['Roboto_Mono',monospace] text-black">
-            Loading recipe details...
-          </div>
-        ) : recipe ? (
-          <div className="p-4 sm:p-8">
-            {/* Recipe Image */}
-            {recipe.image && (
-              <img
-                src={recipe.image}
-                alt={recipe.title}
-                className="w-full h-[200px] sm:h-[300px] md:h-[400px] object-cover mb-4 sm:mb-6"
-              />
-            )}
-
-            {/* Recipe Title */}
-            <h2 className="font-['Roboto_Mono',monospace] font-bold text-xl sm:text-2xl md:text-3xl text-black mb-3 sm:mb-4">
-              {recipe.title}
-            </h2>
-
-            {/* Recipe Info */}
-            <div className="flex flex-wrap gap-3 sm:gap-6 mb-4 sm:mb-6 font-['Roboto_Mono',monospace] text-xs sm:text-sm text-black">
-              {recipe.readyInMinutes && (
-                <div>
-                  <span className="font-bold">Time:</span> {recipe.readyInMinutes} min
-                </div>
-              )}
-              {recipe.servings && (
-                <div>
-                  <span className="font-bold">Servings:</span> {recipe.servings}
-                </div>
-              )}
-              {recipe.extendedIngredients && (
-                <div>
-                  <span className="font-bold">Ingredients:</span>{' '}
-                  {recipe.extendedIngredients.length}
-                </div>
-              )}
+          {loading ? (
+            <div className="p-6 sm:p-12 text-center font-['Roboto_Mono',monospace] text-black">
+              Loading recipe details...
             </div>
+          ) : recipe ? (
+            <div>
+              {/* Header with image */}
+              {recipe.image && (
+                <div className="relative border-b-4 border-black">
+                  <img
+                    src={recipe.image}
+                    alt={recipe.title}
+                    className="w-full h-[250px] sm:h-[350px] object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  />
+                  
+                  {/* Close button on image */}
+                  <IconButton
+                    onClick={onClose}
+                    className="absolute top-4 right-4 text-2xl"
+                    shape="square"
+                    size="sm"
+                    aria-label="Close modal"
+                  >
+                    ×
+                  </IconButton>
+                </div>
+              )}
 
-            {/* Ingredients */}
-            {recipe.extendedIngredients && recipe.extendedIngredients.length > 0 && (
-              <div className="mb-4 sm:mb-6">
-                <h3 className="font-['Roboto_Mono',monospace] font-bold text-lg sm:text-xl text-black mb-2 sm:mb-3">
-                  Ingredients
-                </h3>
-                <ul className="font-['Roboto_Mono',monospace] text-xs sm:text-sm text-black space-y-2">
-                  {recipe.extendedIngredients.map((ingredient: any, index: number) => (
-                    <li key={index} className="flex items-start">
-                      <span className="mr-2">•</span>
-                      <span>
-                        {ingredient.amount} {ingredient.unit} {ingredient.name}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+              {/* Content */}
+              <div className="p-6 sm:p-8">
+                {/* Recipe Title */}
+                <h2 className="font-['Roboto_Mono',monospace] font-bold text-2xl sm:text-3xl text-black mb-4 pb-4 border-b-2 border-black">
+                  {recipe.title}
+                </h2>
 
-            {/* Instructions */}
-            {recipe.instructions && (
-              <div className="mb-4 sm:mb-6">
-                <h3 className="font-['Roboto_Mono',monospace] font-bold text-lg sm:text-xl text-black mb-2 sm:mb-3">
-                  Instructions
-                </h3>
-                <div
-                  className="font-['Roboto_Mono',monospace] text-xs sm:text-sm text-black"
-                  dangerouslySetInnerHTML={{
-                    __html: recipe.instructions,
-                  }}
-                />
-              </div>
-            )}
+                {/* Recipe Info - styled as tags */}
+                <div className="flex flex-wrap gap-3 mb-6">
+                  {recipe.readyInMinutes && (
+                    <div className="px-4 py-2 bg-black text-[#f4eedf] border-2 border-black font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
+                      {recipe.readyInMinutes} min
+                    </div>
+                  )}
+                  {recipe.servings && (
+                    <div className="px-4 py-2 bg-white border-2 border-black font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
+                      {recipe.servings} servings
+                    </div>
+                  )}
+                  {recipe.extendedIngredients && (
+                    <div className="px-4 py-2 bg-white border-2 border-black font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
+                      {recipe.extendedIngredients.length} ingredients
+                    </div>
+                  )}
+                </div>
 
-            {/* Source Link */}
-            {recipe.sourceUrl && (
-              <div className="mt-4 sm:mt-6">
-                <a
-                  href={recipe.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-['Roboto_Mono',monospace] text-xs sm:text-sm text-black underline hover:no-underline"
-                >
-                  View Original Recipe →
-                </a>
+                {/* Ingredients */}
+                {recipe.extendedIngredients && recipe.extendedIngredients.length > 0 && (
+                  <div className="mb-8 pb-8 border-b-2 border-black">
+                    <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-4 flex items-center gap-2">
+                      <div className="w-3 h-3 bg-black" />
+                      Ingredients
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {recipe.extendedIngredients.map((ingredient: any, index: number) => (
+                        <div key={index} className="font-['Roboto_Mono',monospace] text-sm text-black flex items-start gap-2 p-3 bg-white border border-black/20">
+                          <div className="w-1.5 h-1.5 bg-black rounded-full mt-1.5 flex-shrink-0" />
+                          <span>
+                            {ingredient.amount} {ingredient.unit} {ingredient.name}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Instructions */}
+                {recipe.instructions && (
+                  <div className="mb-6">
+                    <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-4 flex items-center gap-2">
+                      <div className="w-3 h-3 bg-black" />
+                      Instructions
+                    </h3>
+                    <div
+                      className="font-['Roboto_Mono',monospace] text-sm text-black leading-relaxed p-4 bg-white border-2 border-black"
+                      dangerouslySetInnerHTML={{
+                        __html: recipe.instructions,
+                      }}
+                    />
+                  </div>
+                )}
+
+                {/* Source Link */}
+                {recipe.sourceUrl && (
+                  <div className="mt-6 pt-6 border-t-2 border-black">
+                    <a
+                      href={recipe.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-black text-[#f4eedf] border-2 border-black font-['Roboto_Mono',monospace] text-sm font-bold uppercase hover:bg-white hover:text-black transition-all duration-300"
+                    >
+                      View Original Recipe
+                      <span>→</span>
+                    </a>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-        ) : (
-          <div className="p-6 sm:p-12 text-center font-['Roboto_Mono',monospace] text-black">
-            Recipe not found
-          </div>
-        )}
+            </div>
+          ) : (
+            <div className="p-12 text-center font-['Roboto_Mono',monospace] text-black">
+              Recipe not found
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
