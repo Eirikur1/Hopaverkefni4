@@ -321,7 +321,7 @@ const Home: React.FC = () => {
           </section>
 
           {/* Recipe Cards Grid */}
-          <section className="px-4 sm:px-[21px] py-8 sm:py-[60px] max-w-[1200px] mx-auto">
+          <section className="px-4 sm:px-[21px] pt-[38px] pb-8 sm:pb-[60px] max-w-[1200px] mx-auto">
             {loading ? (
               <div className="text-center font-['Roboto_Mono',monospace] text-lg sm:text-xl text-black">
                 Loading recipes...
