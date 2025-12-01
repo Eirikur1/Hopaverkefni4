@@ -107,7 +107,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               
               {/* Duplicate title for seamless scroll loop (only if overflowing) */}
               {isOverflowing && (
-                <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] pl-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <span 
+                  className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] pl-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  aria-hidden="true"
+                >
                   {heading}
                 </span>
               )}
@@ -117,7 +120,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {/* Ingredients info with animated dot indicator */}
           <div className="flex items-center justify-between pt-2 border-t border-black/20">
             <AnimatedText 
-              className="font-['Roboto_Mono',sans-serif] text-[10px] text-black/70 uppercase tracking-wider truncate"
+              className="font-['Roboto_Mono',sans-serif] text-[11px] text-black/70 uppercase tracking-wider truncate"
               delay={0.4}
               duration={1}
               stagger={0.1}
@@ -126,7 +129,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </AnimatedText>
             
             {/* Dot indicator that scales on hover */}
-            <div className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300" />
+            <div 
+              className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300"
+              aria-hidden="true"
+            />
           </div>
         </div>
       </div>

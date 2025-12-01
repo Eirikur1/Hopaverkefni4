@@ -118,21 +118,33 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
       {/* Search Form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
         {searchMode === 'query' ? (
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Start typing to search recipes..."
-            className="w-full px-4 sm:px-6 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-sm sm:text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
-          />
+          <div>
+            <label htmlFor="recipe-search" className="sr-only">
+              Search recipes by name
+            </label>
+            <input
+              id="recipe-search"
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Start typing to search recipes..."
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-sm sm:text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
+            />
+          </div>
         ) : (
-          <input
-            type="text"
-            value={ingredientsInput}
-            onChange={(e) => setIngredientsInput(e.target.value)}
-            placeholder="Start typing ingredients: e.g., chicken rice garlic"
-            className="w-full px-4 sm:px-6 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-sm sm:text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
-          />
+          <div>
+            <label htmlFor="ingredients-search" className="sr-only">
+              Search recipes by ingredients
+            </label>
+            <input
+              id="ingredients-search"
+              type="text"
+              value={ingredientsInput}
+              onChange={(e) => setIngredientsInput(e.target.value)}
+              placeholder="Start typing ingredients: e.g., chicken rice garlic"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-sm sm:text-base text-black border-2 border-black bg-transparent focus:outline-none focus:border-black placeholder:text-gray-500"
+            />
+          </div>
         )}
         
         <div className="flex gap-2 sm:gap-4">

@@ -6,6 +6,19 @@ body {
   padding: 0;
 }
 
+/* Screen reader only - hide visually but keep for accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* Scrolling text animation for long titles */
 @keyframes scroll {
   0% {
