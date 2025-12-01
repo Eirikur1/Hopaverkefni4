@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Button } from './Button';
 
 interface RecipeSearchProps {
   onSearch: (query: string) => void;
@@ -98,26 +99,20 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
     <div className="w-full max-w-[800px] mx-auto mb-8 sm:mb-12">
       {/* Mode Toggle */}
       <div className="flex justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
-        <button
+        <Button
+          variant={searchMode === 'query' ? 'primary' : 'secondary'}
+          size="sm"
           onClick={() => setSearchMode('query')}
-          className={`px-4 sm:px-6 py-2 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
-            searchMode === 'query'
-              ? 'bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black border-2 border-black'
-              : 'bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf]'
-          }`}
         >
           Search Recipes
-        </button>
-        <button
+        </Button>
+        <Button
+          variant={searchMode === 'ingredients' ? 'primary' : 'secondary'}
+          size="sm"
           onClick={() => setSearchMode('ingredients')}
-          className={`px-4 sm:px-6 py-2 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 active:scale-95 ${
-            searchMode === 'ingredients'
-              ? 'bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black border-2 border-black'
-              : 'bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf]'
-          }`}
         >
           By Ingredients
-        </button>
+        </Button>
       </div>
 
       {/* Search Form */}
@@ -141,21 +136,24 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
         )}
         
         <div className="flex gap-2 sm:gap-4">
-          <button
+          <Button
             type="submit"
-            className="flex-1 px-6 sm:px-8 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200"
+            variant="primary"
+            size="md"
+            className="flex-1"
           >
             Search
-          </button>
+          </Button>
           
           {showReset && (
-            <button
+            <Button
               type="button"
+              variant="secondary"
+              size="md"
               onClick={handleReset}
-              className="px-6 sm:px-8 py-3 sm:py-4 font-['Roboto_Mono',monospace] text-xs sm:text-sm uppercase tracking-wider bg-transparent text-black border-2 border-black hover:bg-black hover:text-[#f4eedf] active:scale-95 transition-all duration-200"
             >
               Reset
-            </button>
+            </Button>
           )}
         </div>
       </form>

@@ -1,14 +1,14 @@
 /**
  * Button Component
  *
- * A reusable, accessible button component with multiple variants.
- * Demonstrates mobile-first Tailwind styling and accessibility best practices.
+ * A reusable, accessible button component matching the app's design system.
+ * Features Roboto Mono typography, black/cream color scheme, and mobile-first responsive design.
  */
 
 import { type ButtonHTMLAttributes, type ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger" | "success";
+  variant?: "primary" | "secondary" | "ghost";
   size?: "sm" | "md" | "lg";
   children: ReactNode;
   fullWidth?: boolean;
@@ -17,15 +17,20 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 /**
  * Button component with customizable variants and sizes
  *
- * @param variant - Visual style variant
- * @param size - Button size
+ * @param variant - Visual style variant (primary: black bg, secondary: outlined, ghost: minimal)
+ * @param size - Button size (sm, md, lg)
  * @param children - Button content
  * @param fullWidth - Whether button should take full width
  * @param props - Additional HTML button attributes
  *
  * @example
  * <Button variant="primary" onClick={handleClick}>
- *   Click me
+ *   Search
+ * </Button>
+ *
+ * @example
+ * <Button variant="secondary" size="sm">
+ *   Reset
  * </Button>
  */
 export function Button({
@@ -36,24 +41,22 @@ export function Button({
   className = "",
   ...props
 }: ButtonProps) {
-  // Base styles (mobile-first)
+  // Base styles - mobile-first with app's design system
   const baseStyles =
-    "font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+    "font-['Roboto_Mono',monospace] font-medium uppercase tracking-wider border-2 border-black active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 focus:outline-none";
 
-  // Variant styles
+  // Variant styles matching app's black/cream color scheme
   const variantStyles = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500",
-    secondary:
-      "bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-500",
-    danger: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500",
-    success: "bg-green-600 hover:bg-green-700 text-white focus:ring-green-500",
+    primary: "bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black",
+    secondary: "bg-transparent text-black hover:bg-black hover:text-[#f4eedf]",
+    ghost: "bg-transparent text-black border-transparent hover:border-black",
   };
 
-  // Size styles
+  // Size styles - mobile-first with responsive breakpoints
   const sizeStyles = {
-    sm: "px-3 py-1.5 text-sm",
-    md: "px-4 py-2 text-base",
-    lg: "px-6 py-3 text-lg",
+    sm: "px-4 sm:px-6 py-2 text-xs sm:text-sm tracking-wider",
+    md: "px-6 sm:px-8 py-3 sm:py-4 text-xs sm:text-sm tracking-wider",
+    lg: "px-8 sm:px-12 py-3 sm:py-4 text-sm sm:text-[18px] tracking-[1px] sm:tracking-[2px]",
   };
 
   // Width style

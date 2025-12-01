@@ -6,6 +6,7 @@
  */
 
 export { Button } from "./Button";
+export { IconButton } from "./IconButton";
 export { ProductCard } from "./ProductCard";
 export { LogoLoop } from "./LogoLoop";
 export { default as SplitText } from "./SplitText";
