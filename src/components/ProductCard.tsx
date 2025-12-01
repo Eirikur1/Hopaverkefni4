@@ -21,43 +21,49 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div 
       data-animate-card
       data-card-key={id}
-      className="flex flex-col w-full max-w-[240px] h-[240px] cursor-pointer hover:scale-[0.98] transition-all duration-300 rounded-[16px] overflow-hidden shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_0_rgba(0,0,0,0.12)] bg-white"
+      className="group relative w-full max-w-[240px] h-[300px] cursor-pointer"
       onClick={onClick}
     >
-      {/* Image with gradient overlay */}
-      <div className="relative w-full h-[200px] overflow-hidden">
-        <img 
-          src={image} 
-          alt={heading}
-          className="w-full h-full object-cover"
-        />
+      {/* Background card - black */}
+      <div className="absolute inset-0 bg-black rounded-[12px] transition-all duration-300 group-hover:translate-x-1 group-hover:translate-y-1" />
+      
+      {/* Main card - offset for shadow effect */}
+      <div className="absolute inset-0 bg-[#f4eedf] rounded-[12px] border-2 border-black transition-all duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1 flex flex-col overflow-hidden">
         
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/75" />
+        {/* Image section */}
+        <div className="relative w-full h-[200px] overflow-hidden border-b-2 border-black">
+          <img 
+            src={image} 
+            alt={heading}
+            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+          />
+        </div>
         
-        {/* Recipe name on gradient */}
-        <div className="absolute bottom-0 left-0 right-0 p-4">
+        {/* Content section */}
+        <div className="flex-1 p-4 flex flex-col justify-between bg-[#f4eedf]">
+          {/* Title */}
           <AnimatedText 
-            className="font-['Roboto_Mono',sans-serif] font-bold text-base text-white leading-[22px] line-clamp-2 block"
+            className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] truncate"
             delay={0.2}
             duration={1}
             stagger={0.1}
           >
             {heading}
           </AnimatedText>
+          
+          {/* Ingredients */}
+          <div className="flex items-center justify-between pt-2 border-t border-black/20">
+            <AnimatedText 
+              className="font-['Roboto_Mono',sans-serif] text-[10px] text-black/70 uppercase tracking-wider truncate"
+              delay={0.4}
+              duration={1}
+              stagger={0.1}
+            >
+              {ingredients}
+            </AnimatedText>
+            <div className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300" />
+          </div>
         </div>
-      </div>
-      
-      {/* Bottom info bar */}
-      <div className="flex items-center justify-center h-[40px] bg-white px-4">
-        <AnimatedText 
-          className="font-['Roboto_Mono',sans-serif] text-xs text-black truncate"
-          delay={0.4}
-          duration={1}
-          stagger={0.1}
-        >
-          {ingredients}
-        </AnimatedText>
       </div>
     </div>
   );
