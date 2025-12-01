@@ -41,16 +41,11 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
       className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 bg-black/50"
       onClick={onClose}
     >
-      {/* Neubrutalism modal container */}
-      <div className="relative w-full max-w-4xl max-h-[90vh]">
-        {/* Black shadow layer */}
-        <div className="absolute inset-0 bg-black rounded-[12px] translate-x-2 translate-y-2" />
-        
-        {/* Main modal */}
-        <div
-          className="relative bg-[#f4eedf] w-full max-h-[90vh] overflow-y-auto border-4 border-black rounded-[12px]"
-          onClick={(e) => e.stopPropagation()}
-        >
+      {/* Main modal */}
+      <div
+        className="bg-[#f4eedf] w-full max-w-4xl max-h-[90vh] overflow-y-auto border-4 border-black rounded-[12px]"
+        onClick={(e) => e.stopPropagation()}
+      >
           {loading ? (
             <div className="p-6 sm:p-12 text-center font-['Roboto_Mono',monospace] text-black">
               Loading recipe details...
@@ -163,7 +158,6 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
             </div>
           )}
         </div>
-      </div>
     </div>
   );
 };
