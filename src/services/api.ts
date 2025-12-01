@@ -114,7 +114,9 @@ export async function searchRecipes(query: string, number: number = 12, offset: 
           image: meal.strMealThumb,
           summary: meal.strInstructions,
           extendedIngredients: Array.from({ length: ingredients.length }),
-          ingredientNames: ingredients
+          ingredientNames: ingredients,
+          readyInMinutes: 30, // TheMealDB doesn't provide this, using default
+          servings: 4 // Default value
         };
       }) : [],
       totalResults: data.meals ? data.meals.length : 0
@@ -217,7 +219,9 @@ export async function searchRecipesByIngredients(
               usedIngredientCount: matchedCount,
               missedIngredientCount: Math.max(0, ingredientCount - matchedCount),
               totalIngredients: ingredientCount,
-              ingredientNames: allIngredientNames
+              ingredientNames: allIngredientNames,
+              readyInMinutes: 30, // TheMealDB doesn't provide this, using default
+              servings: 4 // Default value
             };
           }
           
@@ -229,7 +233,9 @@ export async function searchRecipesByIngredients(
             usedIngredientCount: 1,
             missedIngredientCount: 0,
             totalIngredients: 0,
-            ingredientNames: []
+            ingredientNames: [],
+            readyInMinutes: 30,
+            servings: 4
           };
         } catch (error) {
           console.error(`Error fetching details for meal ${meal.idMeal}:`, error);
@@ -240,7 +246,9 @@ export async function searchRecipesByIngredients(
             usedIngredientCount: 1,
             missedIngredientCount: 0,
             totalIngredients: 0,
-            ingredientNames: []
+            ingredientNames: [],
+            readyInMinutes: 30,
+            servings: 4
           };
         }
       })
@@ -375,7 +383,9 @@ export async function getRandomRecipes(number: number = 8): Promise<any> {
           image: meal.strMealThumb,
           summary: meal.strInstructions,
           extendedIngredients: Array.from({ length: ingredients.length }),
-          ingredientNames: ingredients
+          ingredientNames: ingredients,
+          readyInMinutes: 30, // TheMealDB doesn't provide this, using default
+          servings: 4 // Default value
         };
       })
     };

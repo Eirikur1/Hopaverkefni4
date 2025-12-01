@@ -20,6 +20,8 @@ interface ProductCardProps {
   heading: string;
   ingredients: string;
   description: string;
+  readyInMinutes?: number;
+  servings?: number;
   onClick?: () => void;
   id?: number | string;
 }
@@ -32,6 +34,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   image,
   heading,
   ingredients,
+  readyInMinutes,
+  servings,
   onClick,
   id,
 }) => {
@@ -117,22 +121,45 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             </div>
           </div>
           
-          {/* Ingredients info with animated dot indicator */}
-          <div className="flex items-center justify-between pt-2 border-t border-black/20">
-            <AnimatedText 
-              className="font-['Roboto_Mono',sans-serif] text-[11px] text-black/70 uppercase tracking-wider truncate"
-              delay={0.4}
-              duration={1}
-              stagger={0.1}
-            >
-              {ingredients}
-            </AnimatedText>
+          {/* Recipe info section */}
+          <div className="flex flex-col gap-1.5 pt-2 border-t border-black/20">
+            {/* Time and Servings */}
+            <div className="flex items-center gap-2 text-[10px] text-black/70 font-['Roboto_Mono',sans-serif] uppercase tracking-wider">
+              {readyInMinutes && (
+                <span className="flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                  </svg>
+                  {readyInMinutes} min
+                </span>
+              )}
+              {servings && (
+                <span className="flex items-center gap-1">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                  </svg>
+                  {servings}
+                </span>
+              )}
+            </div>
             
-            {/* Dot indicator that scales on hover */}
-            <div 
-              className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300"
-              aria-hidden="true"
-            />
+            {/* Ingredients with dot indicator */}
+            <div className="flex items-center justify-between">
+              <AnimatedText 
+                className="font-['Roboto_Mono',sans-serif] text-[11px] text-black/70 uppercase tracking-wider truncate"
+                delay={0.4}
+                duration={1}
+                stagger={0.1}
+              >
+                {ingredients}
+              </AnimatedText>
+              
+              {/* Dot indicator that scales on hover */}
+              <div 
+                className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300"
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </div>
       </div>

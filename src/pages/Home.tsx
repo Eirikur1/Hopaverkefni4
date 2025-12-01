@@ -50,6 +50,8 @@ const Home: React.FC = () => {
           heading: recipe.title,
           ingredients: `${ingredientCount} Ingredients`,
           description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
+          readyInMinutes: recipe.readyInMinutes,
+          servings: recipe.servings,
         };
       });
       setRecipes(formattedRecipes);
@@ -84,6 +86,8 @@ const Home: React.FC = () => {
           ingredients:
             ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
           description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
+          readyInMinutes: recipe.readyInMinutes,
+          servings: recipe.servings,
         };
       });
       setRecipes(formattedRecipes);
@@ -121,6 +125,8 @@ const Home: React.FC = () => {
           description: firstThree 
             ? (hasMore ? `${firstThree}...` : firstThree)
             : "Delicious recipe",
+          readyInMinutes: recipe.readyInMinutes,
+          servings: recipe.servings,
         };
       });
       setRecipes(formattedRecipes);
@@ -161,6 +167,8 @@ const Home: React.FC = () => {
             ingredients:
               ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
             description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
+            readyInMinutes: recipe.readyInMinutes,
+            servings: recipe.servings,
           };
         });
         // Check if there are more results available
@@ -188,6 +196,8 @@ const Home: React.FC = () => {
             description: firstThree 
               ? (hasMore ? `${firstThree}...` : firstThree)
               : "Delicious recipe",
+            readyInMinutes: recipe.readyInMinutes,
+            servings: recipe.servings,
           };
         });
         // Check if there are more results available
@@ -207,6 +217,8 @@ const Home: React.FC = () => {
             heading: recipe.title,
             ingredients: `${ingredientCount} Ingredients`,
             description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
+            readyInMinutes: recipe.readyInMinutes,
+            servings: recipe.servings,
           };
         });
         setHasMoreResults(true);
