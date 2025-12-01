@@ -14,7 +14,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   image,
   heading,
   ingredients,
-  description,
   onClick,
   id,
 }) => {
@@ -22,24 +21,24 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     <div 
       data-animate-card
       data-card-key={id}
-      className="flex flex-col w-full max-w-[240px] cursor-pointer hover:scale-95 transition-transform duration-300"
+      className="flex flex-col w-full max-w-[240px] h-[240px] cursor-pointer hover:scale-[0.98] transition-all duration-300 rounded-[16px] overflow-hidden shadow-[0_4px_20px_0_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_0_rgba(0,0,0,0.12)] bg-white"
       onClick={onClick}
     >
-      {/* Image - Fixed aspect ratio */}
-      <div className="w-full aspect-square overflow-hidden mb-3 bg-gray-100 rounded-[10px] shadow-[0px_10px_50px_-10px_rgba(0,0,0,0.2)]">
+      {/* Image with gradient overlay */}
+      <div className="relative w-full h-[200px] overflow-hidden">
         <img 
           src={image} 
           alt={heading}
           className="w-full h-full object-cover"
         />
-      </div>
-      
-      {/* Content Container - Fixed heights for alignment */}
-      <div className="flex flex-col w-full">
-        {/* Heading - Fixed height with line clamp */}
-        <div className="h-[44px] mb-2 overflow-hidden">
+        
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/75" />
+        
+        {/* Recipe name on gradient */}
+        <div className="absolute bottom-0 left-0 right-0 p-4">
           <AnimatedText 
-            className="font-['Roboto_Mono',sans-serif] font-bold text-base text-black leading-[22px] line-clamp-2 block"
+            className="font-['Roboto_Mono',sans-serif] font-bold text-base text-white leading-[22px] line-clamp-2 block"
             delay={0.2}
             duration={1}
             stagger={0.1}
@@ -47,30 +46,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {heading}
           </AnimatedText>
         </div>
-        
-        {/* Ingredients - Fixed height */}
-        <div className="h-[20px] mb-2 overflow-hidden">
-          <AnimatedText 
-            className="font-['Roboto_Mono',sans-serif] text-sm text-black leading-[20px] block truncate"
-            delay={0.4}
-            duration={1}
-            stagger={0.1}
-          >
-            {ingredients}
-          </AnimatedText>
-        </div>
-        
-        {/* Description - Fixed height with line clamp */}
-        <div className="h-[40px] overflow-hidden">
-          <AnimatedText 
-            className="font-['Roboto_Mono',sans-serif] text-xs text-gray-600 leading-[20px] line-clamp-2 block"
-            delay={0.6}
-            duration={1}
-            stagger={0.1}
-          >
-            {description}
-          </AnimatedText>
-        </div>
+      </div>
+      
+      {/* Bottom info bar */}
+      <div className="flex items-center justify-center h-[40px] bg-white px-4">
+        <AnimatedText 
+          className="font-['Roboto_Mono',sans-serif] text-xs text-black truncate"
+          delay={0.4}
+          duration={1}
+          stagger={0.1}
+        >
+          {ingredients}
+        </AnimatedText>
       </div>
     </div>
   );
