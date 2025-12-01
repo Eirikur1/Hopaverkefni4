@@ -58,16 +58,18 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Content section */}
         <div className="flex-1 p-4 flex flex-col justify-between bg-[#f4eedf]">
           {/* Title with conditional scroll effect */}
-          <div ref={textRef} className="overflow-hidden relative flex items-center">
-            <div className={`whitespace-nowrap flex items-center ${isOverflowing ? 'group-hover:animate-[scroll_10s_linear_infinite]' : ''}`}>
-              <AnimatedText 
-                className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px]"
-                delay={0.2}
-                duration={1}
-                stagger={0.1}
-              >
-                {heading}
-              </AnimatedText>
+          <div ref={textRef} className="overflow-hidden relative h-[19px] flex items-center">
+            <div className={`whitespace-nowrap inline-flex items-baseline ${isOverflowing ? 'group-hover:animate-[scroll_10s_linear_infinite]' : ''}`}>
+              <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px]">
+                <AnimatedText 
+                  className="inline"
+                  delay={0.2}
+                  duration={1}
+                  stagger={0.1}
+                >
+                  {heading}
+                </AnimatedText>
+              </span>
               {isOverflowing && (
                 <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] pl-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   {heading}
