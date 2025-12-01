@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getRecipeDetails } from '../services/api';
+import { IconButton } from './IconButton';
 
 interface RecipeModalProps {
   recipeId: number;
@@ -45,13 +46,15 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
-        <button
+        <IconButton
           onClick={onClose}
-          className="sticky top-2 sm:top-4 right-2 sm:right-4 float-right bg-black text-[#f4eedf] w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center text-xl sm:text-2xl hover:bg-gray-800 z-10"
+          className="sticky top-2 sm:top-4 right-2 sm:right-4 float-right text-xl sm:text-2xl z-10"
+          shape="square"
+          size="sm"
           aria-label="Close modal"
         >
           ×
-        </button>
+        </IconButton>
 
         {loading ? (
           <div className="p-6 sm:p-12 text-center font-['Roboto_Mono',monospace] text-black">
