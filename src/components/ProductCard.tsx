@@ -63,7 +63,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {/* Description - Fixed height with line clamp */}
         <div className="h-[40px] overflow-hidden">
           <AnimatedText 
-            className="font-['Roboto_Mono',sans-serif] text-sm text-gray-600 leading-[20px] line-clamp-2 block"
+            className="font-['Roboto_Mono',sans-serif] text-xs text-gray-600 leading-[20px] line-clamp-2 block"
             delay={0.6}
             duration={1}
             stagger={0.1}
