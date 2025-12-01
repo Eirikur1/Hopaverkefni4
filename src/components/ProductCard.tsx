@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { AnimatedText } from './AnimatedText';
 
 interface ProductCardProps {
@@ -17,6 +17,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onClick,
   id,
 }) => {
+  const textRef = useRef<HTMLDivElement>(null);
+  const [isOverflowing, setIsOverflowing] = useState(false);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      if (textRef.current) {
+        const isTextOverflowing = textRef.current.scrollWidth > textRef.current.clientWidth;
+        setIsOverflowing(isTextOverflowing);
+      }
+    };
+
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [heading]);
+
   return (
     <div 
       data-animate-card
@@ -41,9 +57,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         
         {/* Content section */}
         <div className="flex-1 p-4 flex flex-col justify-between bg-[#f4eedf]">
-          {/* Title with scroll effect */}
-          <div className="overflow-hidden relative">
-            <div className="group-hover:animate-[scroll_10s_linear_infinite] whitespace-nowrap inline-block">
+          {/* Title with conditional scroll effect */}
+          <div ref={textRef} className="overflow-hidden relative">
+            <div className={`whitespace-nowrap inline-block ${isOverflowing ? 'group-hover:animate-[scroll_10s_linear_infinite]' : ''}`}>
               <AnimatedText 
                 className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] inline-block"
                 delay={0.2}
@@ -52,9 +68,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               >
                 {heading}
               </AnimatedText>
-              <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black inline-block px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                {heading}
-              </span>
+              {isOverflowing && (
+                <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black inline-block px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {heading}
+                </span>
+              )}
             </div>
           </div>
           
