@@ -41,15 +41,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         
         {/* Content section */}
         <div className="flex-1 p-4 flex flex-col justify-between bg-[#f4eedf]">
-          {/* Title */}
-          <AnimatedText 
-            className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] truncate"
-            delay={0.2}
-            duration={1}
-            stagger={0.1}
-          >
-            {heading}
-          </AnimatedText>
+          {/* Title with scroll effect */}
+          <div className="overflow-hidden relative">
+            <div className="group-hover:animate-[scroll_10s_linear_infinite] whitespace-nowrap inline-block">
+              <AnimatedText 
+                className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] inline-block"
+                delay={0.2}
+                duration={1}
+                stagger={0.1}
+              >
+                {heading}
+              </AnimatedText>
+              <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black inline-block px-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                {heading}
+              </span>
+            </div>
+          </div>
           
           {/* Ingredients */}
           <div className="flex items-center justify-between pt-2 border-t border-black/20">

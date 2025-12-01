@@ -5,3 +5,13 @@ body {
   margin: 0;
   padding: 0;
 }
+
+/* Scrolling text animation for long titles */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
