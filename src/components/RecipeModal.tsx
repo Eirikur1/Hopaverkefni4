@@ -63,7 +63,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
                   <img
                     src={recipe.image}
                     alt={recipe.title}
-                    className="w-full h-[250px] sm:h-[350px] object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                    className="w-full h-[250px] sm:h-[350px] object-cover sepia-[0.2] contrast-90 brightness-95 hover:sepia-0 hover:contrast-110 hover:brightness-100 transition-all duration-500"
                   />
                   
                   {/* Close button on image */}

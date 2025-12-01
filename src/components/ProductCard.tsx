@@ -35,7 +35,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <img 
             src={image} 
             alt={heading}
-            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+            className="w-full h-full object-cover sepia-[0.2] contrast-90 brightness-95 group-hover:sepia-0 group-hover:contrast-110 group-hover:brightness-100 transition-all duration-500"
           />
         </div>
         
