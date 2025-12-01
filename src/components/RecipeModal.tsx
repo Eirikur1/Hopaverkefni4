@@ -107,9 +107,9 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
                       <div className="w-3 h-3 bg-black" />
                       Ingredients
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {recipe.extendedIngredients.map((ingredient: any, index: number) => (
-                        <div key={index} className="font-['Roboto_Mono',monospace] text-sm text-black flex items-start gap-2 p-3 bg-white border border-black/20">
+                        <div key={index} className="font-['Roboto_Mono',monospace] text-sm text-black flex items-start gap-2">
                           <div className="w-1.5 h-1.5 bg-black rounded-full mt-1.5 flex-shrink-0" />
                           <span>
                             {ingredient.amount} {ingredient.unit} {ingredient.name}
