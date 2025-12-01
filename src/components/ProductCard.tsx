@@ -10,6 +10,8 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { AnimatedText } from './AnimatedText';
+import scheduleIcon from '../assets/schedule_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
+import groupIcon from '../assets/group_24dp_E3E3E3_FILL0_wght400_GRAD0_opsz24.svg';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -127,17 +129,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <div className="flex items-center gap-2 text-[10px] text-black/70 font-['Roboto_Mono',sans-serif] uppercase tracking-wider">
               {readyInMinutes && (
                 <span className="flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                  </svg>
+                  <img 
+                    src={scheduleIcon} 
+                    alt="" 
+                    className="w-3 h-3 opacity-70"
+                    aria-hidden="true"
+                  />
                   {readyInMinutes} min
                 </span>
               )}
               {servings && (
                 <span className="flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                  </svg>
+                  <img 
+                    src={groupIcon} 
+                    alt="" 
+                    className="w-3 h-3 opacity-70"
+                    aria-hidden="true"
+                  />
                   {servings}
                 </span>
               )}
