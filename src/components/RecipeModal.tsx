@@ -54,7 +54,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
             <div>
               {/* Header with image */}
               {recipe.image && (
-                <div className="relative">
+                <div className="relative border-b-4 border-black">
                   <img
                     src={recipe.image}
                     alt={recipe.title}
@@ -77,24 +77,24 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
               {/* Content */}
               <div className="p-6 sm:p-8">
                 {/* Recipe Title */}
-                <h2 className="font-['Roboto_Mono',monospace] font-bold text-2xl sm:text-3xl text-black mb-6">
+                <h2 className="font-['Roboto_Mono',monospace] font-bold text-2xl sm:text-3xl text-black mb-4 pb-4 border-b-2 border-black">
                   {recipe.title}
                 </h2>
 
                 {/* Recipe Info - styled as tags */}
-                <div className="flex flex-wrap gap-3 mb-8">
+                <div className="flex flex-wrap gap-3 mb-6">
                   {recipe.readyInMinutes && (
-                    <div className="px-4 py-2 bg-black text-[#f4eedf] rounded-full font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
+                    <div className="px-4 py-2 bg-black text-[#f4eedf] border-2 border-black font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
                       {recipe.readyInMinutes} min
                     </div>
                   )}
                   {recipe.servings && (
-                    <div className="px-4 py-2 bg-black/10 rounded-full font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
+                    <div className="px-4 py-2 bg-white border-2 border-black font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
                       {recipe.servings} servings
                     </div>
                   )}
                   {recipe.extendedIngredients && (
-                    <div className="px-4 py-2 bg-black/10 rounded-full font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
+                    <div className="px-4 py-2 bg-white border-2 border-black font-['Roboto_Mono',monospace] text-xs font-bold uppercase">
                       {recipe.extendedIngredients.length} ingredients
                     </div>
                   )}
@@ -102,8 +102,9 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
 
                 {/* Ingredients */}
                 {recipe.extendedIngredients && recipe.extendedIngredients.length > 0 && (
-                  <div className="mb-8">
-                    <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-4">
+                  <div className="mb-8 pb-8 border-b-2 border-black">
+                    <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-4 flex items-center gap-2">
+                      <div className="w-3 h-3 bg-black" />
                       Ingredients
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -122,11 +123,12 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
                 {/* Instructions */}
                 {recipe.instructions && (
                   <div className="mb-6">
-                    <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-4">
+                    <h3 className="font-['Roboto_Mono',monospace] font-bold text-xl text-black mb-4 flex items-center gap-2">
+                      <div className="w-3 h-3 bg-black" />
                       Instructions
                     </h3>
                     <div
-                      className="font-['Roboto_Mono',monospace] text-sm text-black leading-relaxed"
+                      className="font-['Roboto_Mono',monospace] text-sm text-black leading-relaxed p-4 bg-white border-2 border-black"
                       dangerouslySetInnerHTML={{
                         __html: recipe.instructions,
                       }}
@@ -136,12 +138,12 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({ recipeId, onClose }) =
 
                 {/* Source Link */}
                 {recipe.sourceUrl && (
-                  <div className="mt-8">
+                  <div className="mt-6 pt-6 border-t-2 border-black">
                     <a
                       href={recipe.sourceUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-black text-[#f4eedf] rounded-full font-['Roboto_Mono',monospace] text-sm font-bold uppercase hover:bg-black/80 transition-all duration-300"
+                      className="inline-flex items-center gap-2 px-6 py-3 bg-black text-[#f4eedf] border-2 border-black font-['Roboto_Mono',monospace] text-sm font-bold uppercase hover:bg-white hover:text-black transition-all duration-300"
                     >
                       View Original Recipe
                       <span>→</span>
