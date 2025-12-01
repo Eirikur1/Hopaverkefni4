@@ -6,11 +6,11 @@
  */
 
 export { Button } from "./Button";
+export { IconButton } from "./IconButton";
 export { ProductCard } from "./ProductCard";
 export { LogoLoop } from "./LogoLoop";
 export { default as SplitText } from "./SplitText";
 export { default as ClickSpark } from "./ClickSpark";
-export { FilmGrain } from "./FilmGrain";
 export { AnimatedText } from "./AnimatedText";
 export { RecipeSearch } from "./RecipeSearch";
 export { RecipeModal } from "./RecipeModal";

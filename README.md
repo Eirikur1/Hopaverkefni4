@@ -173,12 +173,32 @@ We prioritize accessibility to ensure our application is usable by everyone:
 
 ## 🔀 Git Workflow
 
+We follow a **Git Flow** branching strategy for organized development. See [GIT_WORKFLOW.md](./GIT_WORKFLOW.md) for complete documentation.
+
 ### Branching Strategy
 
 - `main` - Production-ready code
 - `develop` - Integration branch for features
 - `feature/*` - Individual feature branches
+  - `feature/update-card-description-size` ✓ (merged)
+  - `feature/add-team-information` (in progress)
+  - `feature/accessibility-improvements` (in progress)
 - `bugfix/*` - Bug fix branches
+
+### Quick Workflow
+
+```bash
+# Start a new feature
+git checkout develop
+git checkout -b feature/your-feature-name
+
+# Make changes and commit
+git add .
+git commit -m "feat: your feature description"
+
+# Push and create Pull Request
+git push -u origin feature/your-feature-name
+```
 
 ### Commit Convention
 
@@ -188,7 +208,7 @@ We follow conventional commits:
 feat: add user authentication
 fix: resolve API timeout issue
 docs: update README with API documentation
-style: format code with prettier
+style: reduce product card description font size
 refactor: simplify data fetching logic
 test: add tests for user service
 ```
@@ -200,6 +220,9 @@ test: add tests for user service
 3. Push branch and create a Pull Request
 4. Request review from at least one team member
 5. Address feedback and merge when approved
+
+**View Branches**: `git branch -a`  
+**View Graph**: `git log --oneline --graph --all`
 
 ## 📝 Available Scripts
 

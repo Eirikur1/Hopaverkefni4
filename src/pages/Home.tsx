@@ -8,6 +8,8 @@ import {
   RecipeSearch,
   RecipeModal,
   AnimatedGrid,
+  Button,
+  IconButton,
 } from "../components";
 import {
   searchRecipes,
@@ -319,7 +321,7 @@ const Home: React.FC = () => {
           </section>
 
           {/* Recipe Cards Grid */}
-          <section className="px-4 sm:px-[21px] py-8 sm:py-[60px] max-w-[1200px] mx-auto">
+          <section className="px-4 sm:px-[21px] pt-[38px] pb-8 sm:pb-[60px] max-w-[1200px] mx-auto">
             {loading ? (
               <div className="text-center font-['Roboto_Mono',monospace] text-lg sm:text-xl text-black">
                 Loading recipes...
@@ -347,13 +349,14 @@ const Home: React.FC = () => {
                 {/* Load More Button */}
                 {hasMoreResults && (
                   <div className="flex justify-center mt-8 sm:mt-12">
-                    <button
+                    <Button
+                      variant="primary"
+                      size="lg"
                       onClick={loadMoreRecipes}
                       disabled={loadingMore}
-                      className="font-['Roboto_Mono',monospace] font-medium text-sm sm:text-[18px] uppercase tracking-[1px] sm:tracking-[2px] px-8 sm:px-12 py-3 sm:py-4 bg-black text-[#f4eedf] border-2 border-black hover:bg-[#f4eedf] hover:text-black active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
                     >
                       {loadingMore ? "Loading..." : "Load More"}
-                    </button>
+                    </Button>
                   </div>
                 )}
               </>
@@ -483,9 +486,11 @@ const Home: React.FC = () => {
           </div>
 
           {/* Scroll to Top Button */}
-          <button
+          <IconButton
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="fixed bottom-4 left-4 sm:bottom-8 sm:left-8 z-50 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black border-2 border-black hover:bg-[#f4eedf] active:scale-95 transition-all duration-200 flex items-center justify-center shadow-lg group"
+            className="fixed bottom-4 left-4 sm:bottom-8 sm:left-8 z-50 group"
+            shape="circle"
+            size="lg"
             aria-label="Scroll to top"
           >
             <img
@@ -493,7 +498,7 @@ const Home: React.FC = () => {
               alt=""
               className="w-6 h-6 sm:w-8 sm:h-8 brightness-[10] group-hover:brightness-0 transition-all duration-200"
             />
-          </button>
+          </IconButton>
         </div>
       </ClickSpark>
 
