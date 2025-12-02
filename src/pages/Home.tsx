@@ -11,240 +11,30 @@ import {
   Button,
   IconButton,
 } from "../components";
-import {
-  searchRecipes,
-  searchRecipesByIngredients,
-  getRandomRecipes,
-} from "../services/api";
+import { useRecipes } from "../hooks/useRecipes";
 
 const Home: React.FC = () => {
-  const [recipes, setRecipes] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [loadingMore, setLoadingMore] = useState(false);
+  const {
+    recipes,
+    loading,
+    loadingMore,
+    error,
+    hasMoreResults,
+    currentSearchType,
+    loadRandomRecipes,
+    handleSearch,
+    handleSearchByIngredients,
+    loadMoreRecipes,
+    clearError,
+  } = useRecipes();
+  
   const [selectedRecipeId, setSelectedRecipeId] = useState<number | null>(null);
-  const [currentSearchType, setCurrentSearchType] = useState<
-    "random" | "query" | "ingredients"
-  >("random");
-  const [currentQuery, setCurrentQuery] = useState<string>("");
-  const [currentIngredients, setCurrentIngredients] = useState<string[]>([]);
-  const [hasMoreResults, setHasMoreResults] = useState(true);
 
   // Load random recipes on mount
   useEffect(() => {
     loadRandomRecipes();
-  }, []);
+  }, [loadRandomRecipes]);
 
-  const loadRandomRecipes = async () => {
-    setLoading(true);
-    try {
-      const data = await getRandomRecipes(16);
-      const formattedRecipes = data.recipes.map((recipe: any) => {
-        const ingredientCount = recipe.extendedIngredients?.length || 0;
-        const ingredientNames = recipe.ingredientNames || [];
-        const firstThree = ingredientNames.slice(0, 3).join(', ');
-        const hasMore = ingredientNames.length > 3;
-        
-        return {
-          id: recipe.id,
-          image: recipe.image,
-          heading: recipe.title,
-          ingredients: `${ingredientCount} Ingredients`,
-          description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
-          readyInMinutes: recipe.readyInMinutes,
-          servings: recipe.servings,
-        };
-      });
-      setRecipes(formattedRecipes);
-      setCurrentSearchType("random");
-      setHasMoreResults(true);
-    } catch (error: any) {
-      console.error("Error loading recipes:", error);
-      setRecipes([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearch = async (query: string) => {
-    setLoading(true);
-    try {
-      const data = await searchRecipes(query, 16);
-      const formattedRecipes = data.results.map((recipe: any) => {
-        // Try multiple ways to get ingredient count
-        const ingredientCount =
-          recipe.extendedIngredients?.length ||
-          recipe.nutrition?.ingredients?.length ||
-          0;
-        const ingredientNames = recipe.ingredientNames || [];
-        const firstThree = ingredientNames.slice(0, 3).join(', ');
-        const hasMore = ingredientNames.length > 3;
-
-        return {
-          id: recipe.id,
-          image: recipe.image,
-          heading: recipe.title,
-          ingredients:
-            ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
-          description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
-          readyInMinutes: recipe.readyInMinutes,
-          servings: recipe.servings,
-        };
-      });
-      setRecipes(formattedRecipes);
-      setCurrentSearchType("query");
-      setCurrentQuery(query);
-      // Check if there are potentially more results (API returns up to 100 total)
-      setHasMoreResults(data.totalResults > 16);
-    } catch (error: any) {
-      console.error("Error searching recipes:", error);
-      setRecipes([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSearchByIngredients = async (ingredients: string[]) => {
-    setLoading(true);
-    try {
-      const data = await searchRecipesByIngredients(ingredients, 16);
-      const formattedRecipes = data.results.map((recipe: any) => {
-        const ingredientNames = recipe.ingredientNames || [];
-        const firstThree = ingredientNames.slice(0, 3).join(', ');
-        const hasMore = ingredientNames.length > 3;
-        const matchedText = recipe.usedIngredientCount > 0 
-          ? ` · ${recipe.usedIngredientCount} matched`
-          : '';
-        
-        return {
-          id: recipe.id,
-          image: recipe.image,
-          heading: recipe.title,
-          ingredients: recipe.totalIngredients > 0 
-            ? `${recipe.totalIngredients} Ingredients${matchedText}`
-            : 'Recipe',
-          description: firstThree 
-            ? (hasMore ? `${firstThree}...` : firstThree)
-            : "Delicious recipe",
-          readyInMinutes: recipe.readyInMinutes,
-          servings: recipe.servings,
-        };
-      });
-      setRecipes(formattedRecipes);
-      setCurrentSearchType("ingredients");
-      setCurrentIngredients(ingredients);
-      // Check if there are more results available
-      setHasMoreResults(data.totalResults > 16);
-    } catch (error: any) {
-      console.error("Error searching recipes by ingredients:", error);
-      setRecipes([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadMoreRecipes = async () => {
-    setLoadingMore(true);
-    try {
-      let newRecipes: any[] = [];
-      const currentOffset = recipes.length;
-
-      if (currentSearchType === "query") {
-        // Load more from the same search query (2 rows = 8 cards)
-        const data = await searchRecipes(currentQuery, 8, currentOffset);
-        newRecipes = data.results.map((recipe: any) => {
-          const ingredientCount =
-            recipe.extendedIngredients?.length ||
-            recipe.nutrition?.ingredients?.length ||
-            0;
-          const ingredientNames = recipe.ingredientNames || [];
-          const firstThree = ingredientNames.slice(0, 3).join(', ');
-          const hasMore = ingredientNames.length > 3;
-
-          return {
-            id: recipe.id,
-            image: recipe.image,
-            heading: recipe.title,
-            ingredients:
-              ingredientCount > 0 ? `${ingredientCount} Ingredients` : "Recipe",
-            description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
-            readyInMinutes: recipe.readyInMinutes,
-            servings: recipe.servings,
-          };
-        });
-        // Check if there are more results available
-        setHasMoreResults(
-          data.totalResults > currentOffset + newRecipes.length
-        );
-      } else if (currentSearchType === "ingredients") {
-        // Load more from ingredient search with offset (2 rows = 8 cards)
-        const data = await searchRecipesByIngredients(currentIngredients, 8, currentOffset);
-        newRecipes = data.results.map((recipe: any) => {
-          const ingredientNames = recipe.ingredientNames || [];
-          const firstThree = ingredientNames.slice(0, 3).join(', ');
-          const hasMore = ingredientNames.length > 3;
-          const matchedText = recipe.usedIngredientCount > 0 
-            ? ` - ${recipe.usedIngredientCount} matched`
-            : '';
-          
-          return {
-            id: recipe.id,
-            image: recipe.image,
-            heading: recipe.title,
-            ingredients: recipe.totalIngredients > 0 
-              ? `${recipe.totalIngredients} Ingredients${matchedText}`
-              : 'Recipe',
-            description: firstThree 
-              ? (hasMore ? `${firstThree}...` : firstThree)
-              : "Delicious recipe",
-            readyInMinutes: recipe.readyInMinutes,
-            servings: recipe.servings,
-          };
-        });
-        // Check if there are more results available
-        setHasMoreResults(data.totalResults > currentOffset + newRecipes.length);
-      } else {
-        // Load more random recipes (2 rows = 8 cards)
-        const data = await getRandomRecipes(8);
-        newRecipes = data.recipes.map((recipe: any) => {
-          const ingredientCount = recipe.extendedIngredients?.length || 0;
-          const ingredientNames = recipe.ingredientNames || [];
-          const firstThree = ingredientNames.slice(0, 3).join(', ');
-          const hasMore = ingredientNames.length > 3;
-          
-          return {
-            id: recipe.id,
-            image: recipe.image,
-            heading: recipe.title,
-            ingredients: `${ingredientCount} Ingredients`,
-            description: firstThree ? (hasMore ? `${firstThree}...` : firstThree) : "Delicious recipe",
-            readyInMinutes: recipe.readyInMinutes,
-            servings: recipe.servings,
-          };
-        });
-        setHasMoreResults(true);
-      }
-
-      // Filter out duplicates before adding new recipes
-      if (newRecipes.length > 0) {
-        const existingIds = new Set(recipes.map(r => r.id));
-        const uniqueNewRecipes = newRecipes.filter(recipe => !existingIds.has(recipe.id));
-        
-        if (uniqueNewRecipes.length > 0) {
-          setRecipes([...recipes, ...uniqueNewRecipes]);
-        } else {
-          // If all recipes were duplicates, try loading more
-          setHasMoreResults(false);
-        }
-      } else {
-        setHasMoreResults(false);
-      }
-    } catch (error) {
-      console.error("Error loading more recipes:", error);
-      setHasMoreResults(false);
-    } finally {
-      setLoadingMore(false);
-    }
-  };
 
   // French cuisine vector icons for the logo loop
   const foodIcons = [
@@ -334,6 +124,29 @@ const Home: React.FC = () => {
 
           {/* Recipe Cards Grid */}
           <section className="px-4 sm:px-[21px] pt-[38px] pb-8 sm:pb-[60px] max-w-[1200px] mx-auto">
+            {/* Error Message */}
+            {error && (
+              <div className="mb-8 p-4 sm:p-6 bg-black text-[#f4eedf] rounded-[12px] border-2 border-black max-w-2xl mx-auto">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1">
+                    <h3 className="font-['Roboto_Mono',monospace] font-bold text-sm sm:text-base mb-2">
+                      Oops! Something went wrong
+                    </h3>
+                    <p className="font-['Roboto_Mono',monospace] text-xs sm:text-sm">
+                      {error}
+                    </p>
+                  </div>
+                  <button
+                    onClick={clearError}
+                    className="text-[#f4eedf] hover:opacity-70 transition-opacity text-xl leading-none"
+                    aria-label="Close error message"
+                  >
+                    ×
+                  </button>
+                </div>
+              </div>
+            )}
+
             {loading ? (
               <div className="text-center font-['Roboto_Mono',monospace] text-lg sm:text-xl text-black">
                 Loading recipes...

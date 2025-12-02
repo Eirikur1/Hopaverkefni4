@@ -6,6 +6,7 @@
  */
 
 import type { ApiResponse, ApiError } from "../types";
+import { generateRecipeDefaults } from "../utils/recipeDefaults";
 
 // Base URL for your API (update this with your actual API)
 const API_BASE_URL =
@@ -108,15 +109,17 @@ export async function searchRecipes(query: string, number: number = 12, offset: 
           }
         }
         
+        const recipeId = parseInt(meal.idMeal);
+        const defaults = generateRecipeDefaults(ingredients.length, recipeId);
+        
         return {
-          id: parseInt(meal.idMeal),
+          id: recipeId,
           title: meal.strMeal,
           image: meal.strMealThumb,
           summary: meal.strInstructions,
           extendedIngredients: Array.from({ length: ingredients.length }),
           ingredientNames: ingredients,
-          readyInMinutes: 30, // TheMealDB doesn't provide this, using default
-          servings: 4 // Default value
+          ...defaults
         };
       }) : [],
       totalResults: data.meals ? data.meals.length : 0
@@ -212,43 +215,49 @@ export async function searchRecipesByIngredients(
               }
             }
             
+            const recipeId = parseInt(meal.idMeal);
+            const defaults = generateRecipeDefaults(ingredientCount, recipeId);
+            
             return {
-              id: parseInt(meal.idMeal),
+              id: recipeId,
               title: meal.strMeal,
               image: meal.strMealThumb,
               usedIngredientCount: matchedCount,
               missedIngredientCount: Math.max(0, ingredientCount - matchedCount),
               totalIngredients: ingredientCount,
               ingredientNames: allIngredientNames,
-              readyInMinutes: 30, // TheMealDB doesn't provide this, using default
-              servings: 4 // Default value
+              ...defaults
             };
           }
           
           // Fallback if details fetch fails
+          const recipeId = parseInt(meal.idMeal);
+          const defaults = generateRecipeDefaults(0, recipeId);
+          
           return {
-            id: parseInt(meal.idMeal),
+            id: recipeId,
             title: meal.strMeal,
             image: meal.strMealThumb,
             usedIngredientCount: 1,
             missedIngredientCount: 0,
             totalIngredients: 0,
             ingredientNames: [],
-            readyInMinutes: 30,
-            servings: 4
+            ...defaults
           };
         } catch (error) {
           console.error(`Error fetching details for meal ${meal.idMeal}:`, error);
+          const recipeId = parseInt(meal.idMeal);
+          const defaults = generateRecipeDefaults(0, recipeId);
+          
           return {
-            id: parseInt(meal.idMeal),
+            id: recipeId,
             title: meal.strMeal,
             image: meal.strMealThumb,
             usedIngredientCount: 1,
             missedIngredientCount: 0,
             totalIngredients: 0,
             ingredientNames: [],
-            readyInMinutes: 30,
-            servings: 4
+            ...defaults
           };
         }
       })
@@ -377,15 +386,17 @@ export async function getRandomRecipes(number: number = 8): Promise<any> {
           }
         }
         
+        const recipeId = parseInt(meal.idMeal);
+        const defaults = generateRecipeDefaults(ingredients.length, recipeId);
+        
         return {
-          id: parseInt(meal.idMeal),
+          id: recipeId,
           title: meal.strMeal,
           image: meal.strMealThumb,
           summary: meal.strInstructions,
           extendedIngredients: Array.from({ length: ingredients.length }),
           ingredientNames: ingredients,
-          readyInMinutes: 30, // TheMealDB doesn't provide this, using default
-          servings: 4 // Default value
+          ...defaults
         };
       })
     };
