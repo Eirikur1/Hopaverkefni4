@@ -174,17 +174,6 @@ const Home: React.FC = () => {
                 textAlign="center"
               />
 
-              {/* Navigation */}
-              <nav className="font-['Roboto_Mono',monospace] text-[14px] text-black uppercase tracking-[2.8px] leading-[18px] text-center">
-                <ul className="list-none p-0 m-0">
-                  <li className="mb-1">
-                    <AnimatedText delay={0.3}>•Recipes</AnimatedText>
-                  </li>
-                  <li className="mb-1">
-                    <AnimatedText delay={0.4}>•about us</AnimatedText>
-                  </li>
-                </ul>
-              </nav>
             </div>
           </header>
 
