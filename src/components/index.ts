@@ -1,10 +1,3 @@
-/**
- * Component Exports
- *
- * Centralized export file for all components.
- * Makes imports cleaner throughout the application.
- */
-
 export { Button } from "./Button";
 export { IconButton } from "./IconButton";
 export { ProductCard } from "./ProductCard";
@@ -16,8 +9,6 @@ export { AnimatedText } from "./AnimatedText";
 export { RecipeSearch } from "./RecipeSearch";
 export { RecipeModal } from "./RecipeModal";
 export { AnimatedGrid } from "./AnimatedGrid";
-
-// Layout components
 export { Header } from "./Header";
 export { Footer } from "./Footer";
 export { MiddleSection } from "./MiddleSection";
