@@ -14,7 +14,15 @@ interface Props {
   id?: number | string;
 }
 
-export function ProductCard({ image, heading, ingredients, readyInMinutes, servings, onClick, id }: Props) {
+export function ProductCard({
+  image,
+  heading,
+  ingredients,
+  readyInMinutes,
+  servings,
+  onClick,
+  id,
+}: Props) {
   const textRef = useRef<HTMLDivElement>(null);
   const [overflows, setOverflows] = useState(false);
 
@@ -62,15 +70,32 @@ export function ProductCard({ image, heading, ingredients, readyInMinutes, servi
         </div>
 
         <div className="flex-1 p-4 flex flex-col justify-between bg-[#f4eedf]">
-          <div ref={textRef} className="overflow-hidden relative h-[19px] flex items-center">
-            <div className={`whitespace-nowrap inline-flex items-baseline ${overflows ? "group-hover:animate-[scroll_10s_linear_infinite]" : ""}`}>
+          <div
+            ref={textRef}
+            className="overflow-hidden relative h-[19px] flex items-center"
+          >
+            <div
+              className={`whitespace-nowrap inline-flex items-baseline ${
+                overflows
+                  ? "group-hover:animate-[scroll_10s_linear_infinite]"
+                  : ""
+              }`}
+            >
               <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px]">
-                <AnimatedText className="inline" delay={0.2} duration={1} stagger={0.1}>
+                <AnimatedText
+                  className="inline"
+                  delay={0.2}
+                  duration={1}
+                  stagger={0.1}
+                >
                   {heading}
                 </AnimatedText>
               </span>
               {overflows && (
-                <span className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] pl-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true">
+                <span
+                  className="font-['Roboto_Mono',sans-serif] font-bold text-[14px] text-black leading-[19px] pl-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  aria-hidden="true"
+                >
                   {heading}
                 </span>
               )}
@@ -81,23 +106,39 @@ export function ProductCard({ image, heading, ingredients, readyInMinutes, servi
             <div className="flex items-center gap-2 text-[10px] text-black/70 font-['Roboto_Mono',sans-serif] uppercase tracking-wider">
               {readyInMinutes && (
                 <span className="flex items-center gap-1">
-                  <img src={scheduleIcon} alt="" className="w-3 h-3 brightness-0" />
+                  <img
+                    src={scheduleIcon}
+                    alt=""
+                    className="w-3 h-3 brightness-0"
+                  />
                   <span>{readyInMinutes} min</span>
                 </span>
               )}
               {servings && (
                 <span className="flex items-center gap-1">
-                  <img src={groupIcon} alt="" className="w-3 h-3 brightness-0" />
+                  <img
+                    src={groupIcon}
+                    alt=""
+                    className="w-3 h-3 brightness-0"
+                  />
                   <span>{servings} servings</span>
                 </span>
               )}
             </div>
 
             <div className="flex items-center justify-between">
-              <AnimatedText className="font-['Roboto_Mono',sans-serif] text-[11px] text-black/70 uppercase tracking-wider truncate" delay={0.4} duration={1} stagger={0.1}>
+              <AnimatedText
+                className="font-['Roboto_Mono',sans-serif] text-[11px] text-black/70 uppercase tracking-wider truncate"
+                delay={0.4}
+                duration={1}
+                stagger={0.1}
+              >
                 {ingredients}
               </AnimatedText>
-              <div className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300" aria-hidden="true" />
+              <div
+                className="w-2 h-2 rounded-full bg-black group-hover:scale-150 transition-transform duration-300"
+                aria-hidden="true"
+              />
             </div>
           </div>
         </div>

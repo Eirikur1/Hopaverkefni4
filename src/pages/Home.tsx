@@ -35,6 +35,8 @@ function formatRecipe(recipe: any) {
     heading: recipe.title,
     ingredients: count > 0 ? `${count} Ingredients` : "Recipe",
     description: recipe.summary?.replace(/<[^>]*>/g, "").substring(0, 60) + "..." || "Delicious recipe",
+    readyInMinutes: recipe.readyInMinutes,
+    servings: recipe.servings,
   };
 }
 
