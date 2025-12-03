@@ -193,7 +193,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({
                 )}
                 {recipe.servings && (
                   <div
-                    className="px-4 py-2 bg-black/10 rounded-full font-['Roboto_Mono',monospace] text-xs font-bold uppercase"
+                    className="px-4 py-2 bg-black/10 text-black rounded-full font-['Roboto_Mono',monospace] text-xs font-bold uppercase"
                     role="listitem"
                   >
                     <span className="sr-only">Servings:</span>
@@ -202,7 +202,7 @@ export const RecipeModal: React.FC<RecipeModalProps> = ({
                 )}
                 {recipe.extendedIngredients && (
                   <div
-                    className="px-4 py-2 bg-black/10 rounded-full font-['Roboto_Mono',monospace] text-xs font-bold uppercase"
+                    className="px-4 py-2 bg-black/10 text-black rounded-full font-['Roboto_Mono',monospace] text-xs font-bold uppercase"
                     role="listitem"
                   >
                     <span className="sr-only">Number of ingredients:</span>
