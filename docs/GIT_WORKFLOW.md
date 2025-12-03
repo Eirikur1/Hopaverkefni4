@@ -65,7 +65,6 @@ git push -u origin feature/your-feature-name
 ### 4. Code Review Process
 
 **Reviewer checklist:**
-
 - [ ] Code follows project conventions
 - [ ] No TypeScript errors
 - [ ] Changes match the feature requirements
@@ -77,7 +76,6 @@ git push -u origin feature/your-feature-name
 ### 5. Merging
 
 Once approved:
-
 ```bash
 # Switch to develop
 git checkout develop
@@ -92,7 +90,6 @@ git push origin develop
 ### 6. Deploying to Production
 
 When develop is stable and ready:
-
 ```bash
 # Switch to main
 git checkout main
@@ -155,7 +152,6 @@ git commit -m "refactor: simplify API error handling logic"
 ### Completed Example: Card Description Size Update
 
 1. **Branch Created**: `feature/update-card-description-size`
-
    ```bash
    git checkout -b feature/update-card-description-size
    ```
@@ -163,13 +159,11 @@ git commit -m "refactor: simplify API error handling logic"
 2. **Changes Made**: Updated ProductCard.tsx description from 14px to 12px
 
 3. **Committed**:
-
    ```bash
    git commit -m "style: reduce product card description font size to 12px"
    ```
 
 4. **Merged to Develop**:
-
    ```bash
    git checkout develop
    git merge feature/update-card-description-size --no-ff
@@ -180,19 +174,16 @@ git commit -m "refactor: simplify API error handling logic"
 ## Viewing Branch History
 
 ### See all branches
-
 ```bash
 git branch -a
 ```
 
 ### Visual branch graph
-
 ```bash
 git log --oneline --graph --all --decorate
 ```
 
 ### Commits on a specific branch
-
 ```bash
 git log feature/your-feature-name --oneline
 ```
@@ -218,7 +209,6 @@ git log feature/your-feature-name --oneline
 ## Best Practices
 
 ✅ **Do:**
-
 - Commit often with meaningful messages
 - Pull from develop before starting new work
 - Keep feature branches short-lived (1-3 days max)
@@ -227,7 +217,6 @@ git log feature/your-feature-name --oneline
 - Test your changes before pushing
 
 ❌ **Don't:**
-
 - Commit directly to `main`
 - Force push to shared branches
 - Include unrelated changes in one commit
@@ -237,7 +226,6 @@ git log feature/your-feature-name --oneline
 ## Branch Naming Conventions
 
 ### Features
-
 ```
 feature/add-user-authentication
 feature/implement-dark-mode
@@ -245,14 +233,12 @@ feature/recipe-filtering
 ```
 
 ### Bug Fixes
-
 ```
 bugfix/fix-mobile-layout
 bugfix/api-error-handling
 ```
 
 ### Documentation
-
 ```
 docs/update-readme
 docs/add-api-documentation
@@ -263,7 +249,7 @@ docs/add-api-documentation
 When demonstrating Git workflow in your presentation, show:
 
 1. **Branch Structure** - Run `git branch -a` to show all branches
-2. **Visual Graph** - Run `git log --oneline --graph --all`
+2. **Visual Graph** - Run `git log --oneline --graph --all` 
 3. **Commit History** - Show meaningful commit messages
 4. **GitHub Interface** - Show how PRs and code reviews work
 5. **Merge Commits** - Explain how features get integrated
@@ -292,14 +278,12 @@ git log --since="2 weeks ago" --oneline --all
 ### Daily Workflow
 
 1. **Morning**: Pull latest changes
-
    ```bash
    git checkout develop
    git pull origin develop
    ```
 
 2. **During Work**: Commit frequently
-
    ```bash
    git add .
    git commit -m "feat: partial implementation of feature"
@@ -307,7 +291,6 @@ git log --since="2 weeks ago" --oneline --all
    ```
 
 3. **End of Day**: Push your work
-
    ```bash
    git push origin your-feature-branch
    ```
@@ -319,14 +302,12 @@ git log --since="2 weeks ago" --oneline --all
 If you get merge conflicts:
 
 1. **Pull latest develop**
-
    ```bash
    git checkout develop
    git pull origin develop
    ```
 
 2. **Merge develop into your feature branch**
-
    ```bash
    git checkout your-feature-branch
    git merge develop
@@ -352,3 +333,5 @@ If you get merge conflicts:
 
 **Last Updated**: December 1, 2025  
 **Team**: [Your Team Name]
+
+

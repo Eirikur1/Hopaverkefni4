@@ -6,6 +6,10 @@ body {
   padding: 0;
 }
 
+/* ============================================================================
+   ACCESSIBILITY STYLES
+   ============================================================================ */
+
 /* Screen reader only - hide visually but keep for accessibility */
 .sr-only {
   position: absolute;
@@ -19,6 +23,76 @@ body {
   border-width: 0;
 }
 
+/* Skip link - visible on focus for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  color: #f4eedf;
+  padding: 1rem 2rem;
+  z-index: 9999;
+  font-family: "Roboto Mono", monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 2px solid #000;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
+/* Global focus styles - high contrast focus ring */
+*:focus {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
+/* Focus styles for buttons and interactive elements */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 2px;
+}
+
+/* Focus styles for form inputs */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid #000;
+  outline-offset: 0;
+  border-color: #000 !important;
+}
+
+/* ============================================================================
+   REDUCED MOTION SUPPORT
+   ============================================================================ */
+
+/* Respect user's reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+   ANIMATIONS
+   ============================================================================ */
+
 /* Scrolling text animation for long titles */
 @keyframes scroll {
   0% {
@@ -26,5 +100,40 @@ body {
   }
   100% {
     transform: translateX(-50%);
+  }
+}
+
+/* Film grain animation */
+@keyframes grain {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, 5%);
+  }
+  30% {
+    transform: translate(7%, -25%);
+  }
+  40% {
+    transform: translate(-5%, 25%);
+  }
+  50% {
+    transform: translate(-15%, 10%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 15%);
+  }
+  80% {
+    transform: translate(3%, 35%);
+  }
+  90% {
+    transform: translate(-10%, 10%);
   }
 }

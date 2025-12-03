@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button } from './Button';
+import React, { useState, useEffect, useRef } from "react";
+import { Button } from "./Button";
 
 interface RecipeSearchProps {
   onSearch: (query: string) => void;
   onSearchByIngredients: (ingredients: string[]) => void;
-  onReset: () => void;
+  onReset?: () => void;
   showReset?: boolean;
 }
 
@@ -14,17 +14,19 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
   onReset,
   showReset = false,
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [ingredientsInput, setIngredientsInput] = useState('');
-  const [searchMode, setSearchMode] = useState<'query' | 'ingredients'>('query');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [ingredientsInput, setIngredientsInput] = useState("");
+  const [searchMode, setSearchMode] = useState<"query" | "ingredients">(
+    "query"
+  );
   const debounceTimerRef = useRef<number | null>(null);
-  const lastSearchedQueryRef = useRef<string>('');
-  const lastSearchedIngredientsRef = useRef<string>('');
+  const lastSearchedQueryRef = useRef<string>("");
+  const lastSearchedIngredientsRef = useRef<string>("");
 
   // Reset last searched when switching modes
   useEffect(() => {
-    lastSearchedQueryRef.current = '';
-    lastSearchedIngredientsRef.current = '';
+    lastSearchedQueryRef.current = "";
+    lastSearchedIngredientsRef.current = "";
   }, [searchMode]);
 
   // Auto-search as user types (for both modes)
@@ -34,7 +36,7 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
       clearTimeout(debounceTimerRef.current);
     }
 
-    if (searchMode === 'query' && searchQuery.trim().length >= 2) {
+    if (searchMode === "query" && searchQuery.trim().length >= 2) {
       // Only search if the query has changed from last search
       if (searchQuery.trim() !== lastSearchedQueryRef.current) {
         // Set new timer to search after user stops typing
@@ -43,7 +45,10 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
           onSearch(searchQuery);
         }, 1000); // Wait 1 second after user stops typing
       }
-    } else if (searchMode === 'ingredients' && ingredientsInput.trim().length >= 2) {
+    } else if (
+      searchMode === "ingredients" &&
+      ingredientsInput.trim().length >= 2
+    ) {
       // Only search if the ingredients have changed from last search
       if (ingredientsInput.trim() !== lastSearchedIngredientsRef.current) {
         // Set new timer to search after user stops typing
@@ -51,9 +56,9 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
           lastSearchedIngredientsRef.current = ingredientsInput.trim();
           const ingredients = ingredientsInput
             .split(/[\s,]+/) // Split by spaces or commas
-            .map(i => i.trim())
-            .filter(i => i.length > 0);
-          
+            .map((i) => i.trim())
+            .filter((i) => i.length > 0);
+
           if (ingredients.length > 0) {
             onSearchByIngredients(ingredients);
           }
@@ -66,33 +71,39 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [searchQuery, ingredientsInput, searchMode, onSearch, onSearchByIngredients]);
+  }, [
+    searchQuery,
+    ingredientsInput,
+    searchMode,
+    onSearch,
+    onSearchByIngredients,
+  ]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (searchMode === 'query' && searchQuery.trim()) {
+
+    if (searchMode === "query" && searchQuery.trim()) {
       lastSearchedQueryRef.current = searchQuery.trim();
       onSearch(searchQuery);
-    } else if (searchMode === 'ingredients' && ingredientsInput.trim()) {
+    } else if (searchMode === "ingredients" && ingredientsInput.trim()) {
       lastSearchedIngredientsRef.current = ingredientsInput.trim();
       const ingredients = ingredientsInput
         .split(/[\s,]+/) // Split by spaces or commas
-        .map(i => i.trim())
-        .filter(i => i.length > 0);
+        .map((i) => i.trim())
+        .filter((i) => i.length > 0);
       onSearchByIngredients(ingredients);
     }
   };
 
   const handleReset = () => {
-    setSearchQuery('');
-    setIngredientsInput('');
-    lastSearchedQueryRef.current = '';
-    lastSearchedIngredientsRef.current = '';
+    setSearchQuery("");
+    setIngredientsInput("");
+    lastSearchedQueryRef.current = "";
+    lastSearchedIngredientsRef.current = "";
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    onReset();
+    onReset?.();
   };
 
   return (
@@ -100,16 +111,16 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
       {/* Mode Toggle */}
       <div className="flex justify-center gap-2 sm:gap-4 mb-4 sm:mb-6">
         <Button
-          variant={searchMode === 'query' ? 'primary' : 'secondary'}
+          variant={searchMode === "query" ? "primary" : "secondary"}
           size="sm"
-          onClick={() => setSearchMode('query')}
+          onClick={() => setSearchMode("query")}
         >
           Search Recipes
         </Button>
         <Button
-          variant={searchMode === 'ingredients' ? 'primary' : 'secondary'}
+          variant={searchMode === "ingredients" ? "primary" : "secondary"}
           size="sm"
-          onClick={() => setSearchMode('ingredients')}
+          onClick={() => setSearchMode("ingredients")}
         >
           By Ingredients
         </Button>
@@ -117,7 +128,7 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
 
       {/* Search Form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:gap-4">
-        {searchMode === 'query' ? (
+        {searchMode === "query" ? (
           <div>
             <label htmlFor="recipe-search" className="sr-only">
               Search recipes by name
@@ -146,17 +157,12 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
             />
           </div>
         )}
-        
+
         <div className="flex gap-2 sm:gap-4">
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            className="flex-1"
-          >
+          <Button type="submit" variant="primary" size="md" className="flex-1">
             Search
           </Button>
-          
+
           {showReset && (
             <Button
               type="button"
@@ -172,4 +178,3 @@ export const RecipeSearch: React.FC<RecipeSearchProps> = ({
     </div>
   );
 };
-

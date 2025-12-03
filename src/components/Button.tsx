@@ -16,11 +16,13 @@ export function Button({
   ...props
 }: ButtonProps) {
   const baseStyles =
-    "font-['Roboto_Mono',monospace] font-medium uppercase tracking-wider border-2 border-black active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 focus:outline-none";
+    "font-['Roboto_Mono',monospace] font-medium uppercase tracking-wider border-2 border-black active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 focus:outline-none";
 
   const variantStyles = {
-    primary: "bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black",
-    secondary: "bg-transparent text-black hover:bg-black hover:text-[#f4eedf]",
+    primary:
+      "bg-black text-[#f4eedf] hover:bg-[#f4eedf] hover:text-black hover:-translate-y-1 hover:shadow-lg",
+    secondary:
+      "bg-transparent text-black hover:bg-black hover:text-[#f4eedf] hover:-translate-y-1 hover:shadow-lg",
   };
 
   const sizeStyles = {
